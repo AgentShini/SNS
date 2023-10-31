@@ -1,4 +1,5 @@
 const express = require("express")
+const cookieParser = require('cookie-parser')
 const userAuth = require("./routes/UserAuth");
 const mongoose = require("mongoose")
 const bodyparser = require("body-parser")
@@ -13,6 +14,7 @@ if(err){
 })
 
 app.use(bodyparser.json())
+app.use(cookieParser())
 app.use(bodyparser.urlencoded({extended:true}))
 app.use("/auth",userAuth)
 
