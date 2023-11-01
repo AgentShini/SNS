@@ -17,10 +17,22 @@ class Session {
 }
 
 
+
+
 const sessions = {}
 
 
+
 router.post("/register",async(req,res)=>{
+  const sessionToken = req.cookies['session_token']
+  if (req.cookies && sessionToken) {
+    userSession = sessions[sessionToken]
+    if (userSession) {
+      // If the session token is not present in session map, return an unauthorized error
+      res.status(401).json({message:"Active Session"})
+      return
+  }
+}
     try{
         const {email,username,password} = req.body
         let EmailExists = await User.findOne({email})
@@ -33,18 +45,19 @@ router.post("/register",async(req,res)=>{
         }
         
         const sessionToken = uuid.v4()
-              // set the expiry time as 120s after the current time
-        const now = new Date()
-        const expiresAt = new Date(+now + 1200 * 1000)
+  // set the expiry time as 120s after the current time
+const now = new Date()
+const expiresAt = new Date(+now + 120000 * 1000000)
 
-        // create a session containing information about the user and expiry time
-        const session = new Session(username, expiresAt)
+// create a session containing information about the user and expiry time
+const session = new Session(username, expiresAt)
 
-        sessions[sessionToken] = session
+sessions[sessionToken] = session
 
-        // In the response, set a cookie on the client with the name "session_cookie"
-        // and the value as the UUID we generated. We also set the expiry time
-        res.cookie("session_token", sessionToken, { expires: expiresAt })
+// In the response, set a cookie on the client with the name "session_cookie"
+// and the value as the UUID we generated. We also set the expiry time
+res.cookie("session_token", sessionToken, { expires: expiresAt })
+
 
       let user = new User({
         email:email,
@@ -64,35 +77,30 @@ router.post("/register",async(req,res)=>{
 })
 
 router.get("/access",(req,res)=>{
+  if (!req.cookies) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+}
 
-      // if this request doesn't have any cookies, that means it isn't
-    // authenticated. Return an error code.
-    if (!req.cookies) {
-      res.status(401).end()
-      return
-  }
-
-  // We can obtain the session token from the requests cookies, which come with every request
-  const sessionToken = req.cookies['session_token']
-  if (!sessionToken) {
-      // If the cookie is not set, return an unauthorized status
-      res.status(401).end()
-      return
-  }
+const sessionToken = req.cookies['session_token']
+if (!sessionToken) {
+  res.status(401).json({message:"Unauthorized"})
+  return
+}
 
    // We then get the session of the user from our session map
     // that we set in the signinHandler
     userSession = sessions[sessionToken]
     if (!userSession) {
         // If the session token is not present in session map, return an unauthorized error
-        res.status(401).end()
+        res.status(401).json({message:"Unauthorized"})
         return
     }
     // if the session has expired, return an unauthorized error, and delete the 
     // session from our map
     if (userSession.isExpired()) {
         delete sessions[sessionToken]
-        res.status(401).end()
+        res.status(401).json({message:"Unauthorized"})
         return
     }
 
@@ -103,38 +111,67 @@ router.get("/access",(req,res)=>{
 })
 
 
+
+
 router.post("/logout",(req,res)=>{
   if (!req.cookies) {
-    res.status(401).end()
+    res.status(401).json({message:"Unauthorized"})
     return
 }
 
 const sessionToken = req.cookies['session_token']
 if (!sessionToken) {
-    res.status(401).end()
-    return
+  res.status(401).json({message:"Unauthorized"})
+  return
 }
 
 delete sessions[sessionToken]
 
 res.cookie("session_token", "", { expires: new Date() })
-res.end()
+res.json({message:"Logged out"})
+return
 })
 
 
 
 router.post("/login", async (req, res) => {
+
+  const sessionToken = req.cookies['session_token']
+  if (req.cookies && sessionToken) {
+    userSession = sessions[sessionToken]
+    if (userSession) {
+      // If the session token is not present in session map, return an unauthorized error
+      res.status(401).json({message:"Active Session"})
+      return
+  }
+
+}
     try {
-      const { email, password } = req.body;
+      const { username, password } = req.body;
    
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ username });
    
       if (!user) {
-        return res.status(401).json({ message: "Email does not exist" });
+        return res.status(401).json({ message: "User does not exist" });
       }
    
       bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
+          
+          const sessionToken = uuid.v4()
+          // set the expiry time as 120s after the current time
+        const now = new Date()
+        const expiresAt = new Date(+now + 1200000 * 100000000)
+        
+        // create a session containing information about the user and expiry time
+        const session = new Session(username, expiresAt)
+        
+        sessions[sessionToken] = session
+        
+        // In the response, set a cookie on the client with the name "session_cookie"
+        // and the value as the UUID we generated. We also set the expiry time
+        res.cookie("session_token", sessionToken, { expires: expiresAt })
+
           return res.status(200).json({ message: "User Logged in Successfully" });
         }
         
@@ -145,5 +182,52 @@ router.post("/login", async (req, res) => {
       res.status(401).send(err.message);
     }
   });
+
+
+  router.post("/edit",async (req,res)=>{
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized1"})
+      return
+  }
+
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized2"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized3"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized4"})
+          return
+      }
+
+const {user} = userSession.username
+console.log(userSession.username);
+const {profile,bio} = req.body
+const userExists = await User.findOne({user})
+
+if (userExists){
+  userExists.profile = profile
+  userExists.bio = bio
+  userExists.save().then(()=>{
+  res.status(200).json({message:userExists})
+ })
+}
+
+
+  })
+
+
+  console.log(sessions)
 
   module.exports = router

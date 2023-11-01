@@ -11,7 +11,7 @@ email:{type:String,required:true,unique:true,
             message: props => `${props.value} is not a valid email`
         }},
 password:{type:String,required:true},
-profile_picture:{type:String},
+profile_picture:{type:String,default:"profile"},
 bio:{type:String,default:"Bio"},
 date_joined:{type:Date,default:Date.now()},
 last_active:{type:Date,default:Date.now()}
