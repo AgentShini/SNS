@@ -186,13 +186,13 @@ router.post("/login", async (req, res) => {
 
   router.post("/edit",async (req,res)=>{
     if (!req.cookies) {
-      res.status(401).json({message:"Unauthorized1"})
+      res.status(401).json({message:"Unauthorized"})
       return
   }
 
   const sessionToken = req.cookies['session_token']
   if (!sessionToken) {
-    res.status(401).json({message:"Unauthorized2"})
+    res.status(401).json({message:"Unauthorized"})
     return
   }
   userSession = sessions[sessionToken]  
@@ -200,14 +200,14 @@ router.post("/login", async (req, res) => {
       // that we set in the signinHandler
       if (!userSession) {
           // If the session token is not present in session map, return an unauthorized error
-          res.status(401).json({message:"Unauthorized3"})
+          res.status(401).json({message:"Unauthorized"})
           return
       }
       // if the session has expired, return an unauthorized error, and delete the 
       // session from our map
       if (userSession.isExpired()) {
           delete sessions[sessionToken]
-          res.status(401).json({message:"Unauthorized4"})
+          res.status(401).json({message:"Unauthorized"})
           return
       }
 
@@ -217,7 +217,7 @@ const {profile,bio} = req.body
 const userExists = await User.findOne({user})
 
 if (userExists){
-  userExists.profile = profile
+  userExists.profile_picture = profile
   userExists.bio = bio
   userExists.save().then(()=>{
   res.status(200).json({message:userExists})
