@@ -116,9 +116,8 @@ router.get("/access",(req,res)=>{
   
   delete sessions[sessionToken]
   
-  res.cookie("session_token", "", { expires: new Date() })
-  res.json({message:"Logged out"})
-  return
+  return res.cookie("session_token", "", { expires: new Date() }).json({message:"Logged out"})
+  
   })
   
   
