@@ -1,6 +1,11 @@
 const express = require("express")
 const cookieParser = require('cookie-parser')
-const userAuth = require("./routes/UserAuth");
+const Auth = require("./routes/Auth");
+const Events = require("./routes/Events")
+const Groups = require("./routes/Groups");
+const Message = require("./routes/Message");
+const Profile = require("./routes/Profile");
+
 const mongoose = require("mongoose")
 const bodyparser = require("body-parser")
 require("dotenv").config()
@@ -16,9 +21,12 @@ if(err){
 app.use(bodyparser.json())
 app.use(cookieParser())
 app.use(bodyparser.urlencoded({extended:true}))
-app.use("/auth",userAuth)
+app.use("/chat",Auth,Groups,Message,Profile,Events)
+
+
 
 app.listen(port,()=>{
     console.log(`Listening on port ${port}`)
 })
 
+module.exports = {app}

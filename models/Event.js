@@ -8,7 +8,9 @@ description:{type:String,required:true},
 creator_id:{type:mongoose.Schema.Types.ObjectId,ref:User},
 start_date:{type:Date,required:true},
 end_date:{type:Date,required:true},
-creation_date:{type:Date,default:Date.now()}
+creation_date:{type:Date,default:Date.now()},
+access_code:{type:String,required:true}
+
 })
 
 const Event = mongoose.model("Events",EventSchema)

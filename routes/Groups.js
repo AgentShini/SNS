@@ -1,0 +1,188 @@
+const express = require("express")
+const uuid = require('uuid')
+const Group = require("../models/Groups")
+const GroupMembers = require("../models/GroupMembers")
+const {sessions} = require("./Sessions")
+const router = express.Router();
+
+
+router.post("/createGroup",async(req,res)=>{
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized"})
+      return
+  }
+  
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      const creator_id = userSession.user_id
+      const{name,description} = req.body
+      const access_code = uuid.v4();
+      const group = new Group({
+        name:name,
+        description:description,
+        creator_id:creator_id,
+        access_code:access_code
+      })
+       await group.save()
+
+       const newMember = new GroupMembers({
+        group_id:group._id,
+        access_code:access_code,
+
+        members:{
+          member_id:creator_id,
+          name:userSession.username
+        }})
+
+
+        await newMember.save()
+       res.status(200).json({message:group})
+  })
+
+  router.post("/joinGroup",async(req,res)=>{
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized"})
+      return
+  }
+  
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+
+      const {access_code} = req.body
+      const user = userSession.user_id
+      const joined = await GroupMembers.findOne({access_code:access_code,'members':{
+        $elemMatch:{
+          'name':userSession.username
+        }
+      }})
+
+      if(joined){
+        res.status(401).json({message:"Already a Member"})
+        return 
+      }
+      const group_id = await Group.findOne({access_code})
+      if(group_id){
+
+          
+   const newMember = {
+  member_id: user,
+  name: userSession.username,
+};
+
+const filter = {
+  access_code : access_code, 
+};
+
+const update = {
+  $push: {
+    members: newMember,
+  },
+};      
+    const result = await GroupMembers.updateOne(filter, update);
+    return  res.status(200).json({member:result})
+      }else{
+        return res.status(401).json({message:"Group does not Exist"})
+      }
+  
+  })
+
+
+  router.post("/leaveGroup",async(req,res)=>{
+
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized"})
+      return
+  }
+  
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+
+      const {group_id} = req.body
+      const user = userSession.user_id
+      const joined = await GroupMembers.findOne({group_id:group_id,'members':{
+        $elemMatch:{
+          'name':userSession.username
+        }
+      }})
+
+      if(!joined){
+        res.status(401).json({message:"Not a Member"})
+        return 
+      }
+
+
+
+const filter = { group_id: group_id };
+const pullCondition = { member_id:userSession.user_id };
+
+const update = {
+  $pull: { members: pullCondition }
+};
+
+const result = await GroupMembers.updateOne(filter, update);
+return  res.status(200).json({member:result})
+
+
+
+  })
+
+  
+  
+
+
+
+module.exports = router
