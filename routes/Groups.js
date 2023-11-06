@@ -115,7 +115,7 @@ const update = {
   },
 };      
     const result = await GroupMembers.updateOne(filter, update);
-    return  res.status(200).json({member:result})
+    return  res.status(200).json({message:"Joined Group"})
       }else{
         return res.status(401).json({message:"Group does not Exist"})
       }
@@ -174,11 +174,131 @@ const update = {
 };
 
 const result = await GroupMembers.updateOne(filter, update);
-return  res.status(200).json({member:result})
+return  res.status(200).json({message:"Exited Group"})
 
+})
+
+  router.get("/groups",async(req,res)=>{
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized"})
+      return
+  }
+  
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }      
+      const groups = await GroupMembers.find({'members':{
+        $elemMatch:{
+          'name':userSession.username
+        }
+  }})
+  if(groups.length == 0){
+    return res.status(401).json({message:"No groups"})
+  }
+  return res.status(401).json({message:groups})
 
 
   })
+
+
+
+  router.get("/mygroups",async(req,res)=>{
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized"})
+      return
+  }
+  
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }      
+      const user = userSession.user_id
+      const groups = await Group.find({creator_id:user})
+  if(groups.length == 0){
+    return res.status(401).json({message:"No groups"})
+  }
+  return res.status(401).json({message:groups})
+
+
+  })
+
+
+  router.delete("/deleteGroup",async(req,res)=>{
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized"})
+      return
+  }
+  
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }      
+      const {group_id} = req.body
+      const group = await Group.findOne({_id:group_id})
+      if(group){
+        const user = userSession.user_id
+        const admin = await Group.findOne({_id:group_id,creator_id:user})
+        if(admin){
+          await Group.findByIdAndDelete({_id:group_id})
+          await GroupMembers.findOneAndDelete({group_id:group_id})
+          return res.status(200).json({message:"Group Deleted Successfully"})
+        }else{
+          return res.status(401).json({message:"User is not Admin"})
+        }
+      }else{
+        return res.status(401).json({message:"Group does not Exist"})
+      }
+  })
+
 
   
   

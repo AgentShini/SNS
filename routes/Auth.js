@@ -168,7 +168,7 @@ router.get("/access",(req,res)=>{
           return res.status(401).json({ message: "Invalid Credentials" });
         });
       } catch (error) {
-        res.status(401).send(err.message);
+        return res.status(401).send(err.message);
       }
     });
 

@@ -183,6 +183,130 @@ const result = await EventMembers.updateOne(filter, update);
 return  res.status(200).json({member:result})
   })
 
+
+
+
+  router.get("/events",async(req,res)=>{
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized"})
+      return
+  }
+  
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }      
+      const events = await EventMembers.find({'members':{
+        $elemMatch:{
+          'name':userSession.username
+        }
+  }})
+  if(events.length == 0){
+    return res.status(401).json({message:"No events"})
+  }
+  return res.status(401).json({message:events})
+
+
+  })
+
+
+
+  router.get("/myEvents",async(req,res)=>{
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized"})
+      return
+  }
+  
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }      
+      const user = userSession.user_id
+      const events = await Event.find({creator_id:user})
+  if(events.length == 0){
+    return res.status(401).json({message:"No events"})
+  }
+  return res.status(401).json({message:events})
+
+
+  })
+
+
+  router.delete("/deleteEvent",async(req,res)=>{
+    if (!req.cookies) {
+      res.status(401).json({message:"Unauthorized"})
+      return
+  }
+  
+  const sessionToken = req.cookies['session_token']
+  if (!sessionToken) {
+    res.status(401).json({message:"Unauthorized"})
+    return
+  }
+  userSession = sessions[sessionToken]  
+     // We then get the session of the user from our session map
+      // that we set in the signinHandler
+      if (!userSession) {
+          // If the session token is not present in session map, return an unauthorized error
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }
+      // if the session has expired, return an unauthorized error, and delete the 
+      // session from our map
+      if (userSession.isExpired()) {
+          delete sessions[sessionToken]
+          res.status(401).json({message:"Unauthorized"})
+          return
+      }      
+      const {event_id} = req.body
+      const group = await Event.findOne({_id:event_id})
+      if(group){
+        const user = userSession.user_id
+        const admin = await Event.findOne({_id:event_id,creator_id:user})
+        if(admin){
+          await Event.findByIdAndDelete({_id:event_id})
+          await EventMembers.findOneAndDelete({event_id:event_id})
+          return res.status(200).json({message:"Event Deleted Successfully"})
+        }else{
+          return res.status(401).json({message:"User is not Admin"})
+        }
+      }else{
+        return res.status(401).json({message:"Event does not Exist"})
+      }
+  })
+
   
   
 

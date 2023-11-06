@@ -44,7 +44,7 @@ router.post('/message', async (req, res) => {
     
       // Emit a socket.io event to notify the recipient of the new message.
       io.to(reciever).emit('new message', message);
-      res.send(message);
+      return res.send(message);
     });
     
     router.get('/messages', async (req, res) => {
@@ -76,6 +76,9 @@ router.post('/message', async (req, res) => {
         }
       const userID = userSession.user_id
       const messages = await Messages.find({sender_id:userID});
-      res.send(messages);
+      if(messages.length == 0){
+        res.status(401).json({message:"No Messages"})
+      }
+     return res.send(messages);
     });
     module.exports = router
