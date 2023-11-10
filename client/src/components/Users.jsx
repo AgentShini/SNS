@@ -113,17 +113,13 @@ export default function Users(){
                 </svg>
               </button>
               <div
-                className={`z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 ${
+                className={`z-10 w-22 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 ${
                   activeDropdowns[index] ? '' : 'hidden'
                 }`}
               >
-                <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
-                  <li>
-                    <button onClick={()=>AddFriend(index)} className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                     Add Friend
+                 <button onClick={()=>AddFriend(index)} className=" text-md text-gray-700 dark:text-gray-200 block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                     Message
                     </button>
-                  </li>
-                </ul>
             
               </div>
             </td>

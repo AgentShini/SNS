@@ -1,5 +1,5 @@
 
-import { Sidebar,DarkThemeToggle, Flowbite  } from 'flowbite-react';
+import { Sidebar, DarkThemeToggle, Flowbite, Avatar  } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import {
   HiArrowSmRight,
@@ -9,7 +9,6 @@ import {
   HiOutlinePlusSm,
   HiShoppingBag,
   HiTable,
-  HiUser,
 } from 'react-icons/hi';
 import { twMerge } from 'tailwind-merge';
 
@@ -44,15 +43,11 @@ export default function SideNav(){
                 </Link>
                 </Sidebar.Item>
                 <Sidebar.Item>
-                <Link to = "/leaveGroup">
-                Leave Group
+                <Link to = "/Groups">
+                 Groups
                 </Link>
                 </Sidebar.Item>
-                <Sidebar.Item >
-                <Link to = "/deleteGroup">
-                Create Group
-                </Link>
-                </Sidebar.Item>
+                
               </Sidebar.Collapse>
 
               <Sidebar.Collapse
@@ -75,28 +70,36 @@ export default function SideNav(){
                 </Link>
                 </Sidebar.Item>
                 <Sidebar.Item>
-                <Link to = "/leaveEvent">
-                Leave Event
-                </Link>
-                </Sidebar.Item>
-                <Sidebar.Item >
-                <Link to = "/deleteEvent">
-                Create Event
+                <Link to = "/Events">
+                Events
                 </Link>
                 </Sidebar.Item>
               </Sidebar.Collapse>
 
+              <Sidebar.Collapse
 
-              <Sidebar.Item  icon={HiInbox}>
-              <Link to = "/messages">
-               Messages
-                </Link>
+                icon= {HiInbox}
+                label="Messages"
+                renderChevronIcon={(theme, open) => {
+                  const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
+    
+                  return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
+                }}
+              >
+                <Sidebar.Item>
+                <Avatar img="https://www.flowbite-react.com/images/people/profile-picture-5.jpg" rounded>
+              <div className="space-y-1 font-medium dark:text-white"  style ={{pointer:"cursor"}}>
+                <div>Elon Musk </div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Hey there....!!</div>
+              </div>
+            </Avatar>
               </Sidebar.Item>
-              <Sidebar.Item icon={HiUser}>
-              <Link to = "/friends">
-                Friends
-                </Link>
-              </Sidebar.Item>
+    
+                
+              </Sidebar.Collapse>
+
+
+            
               <Sidebar.Item icon={HiArrowSmRight}>
               <Link to = "/login">
                 Login
