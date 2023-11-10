@@ -1,0 +1,53 @@
+[
+    {
+      "fullname": "John Doe",
+      "username": "john_doe123",
+      "date_joined": "2022-01-01"
+    },
+    {
+      "fullname": "Jane Smith",
+      "username": "jane_smith456",
+      "date_joined": "2022-02-15"
+    },
+    {
+      "fullname": "Bob Johnson",
+      "username": "bob_johnson789",
+      "date_joined": "2022-03-20"
+    },
+    {
+      "fullname": "Alice Williams",
+      "username": "alice_williams101",
+      "date_joined": "2022-04-05"
+    },
+    {
+      "fullname": "Charlie Brown",
+      "username": "charlie_brown222",
+      "date_joined": "2022-05-10"
+    },
+    {
+      "fullname": "Eva Davis",
+      "username": "eva_davis333",
+      "date_joined": "2022-06-25"
+    },
+    {
+      "fullname": "Frank Miller",
+      "username": "frank_miller444",
+      "date_joined": "2022-07-30"
+    },
+    {
+      "fullname": "Grace Wilson",
+      "username": "grace_wilson555",
+      "date_joined": "2022-08-12"
+    },
+    {
+      "fullname": "Harry Taylor",
+      "username": "harry_taylor666",
+      "date_joined": "2022-09-18"
+    },
+    {
+      "fullname": "Ivy Brown",
+      "username": "ivy_brown777",
+      "date_joined": "2022-10-22"
+    }
+  ]
+  
