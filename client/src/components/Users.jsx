@@ -1,5 +1,7 @@
 
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useContext } from 'react';
+import {DataContext} from "../Context"
+const {users} = useContext(DataContext)
 export default function Users(){
   const [activeDropdowns, setActiveDropdowns] = useState({});
   const [addFriend, setAddFriend] = useState({});

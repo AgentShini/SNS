@@ -1,10 +1,12 @@
 const express = require("express")
+const cors = require("cors")
 const cookieParser = require('cookie-parser')
 const Auth = require("./routes/Auth");
 const Events = require("./routes/Events")
 const Groups = require("./routes/Groups");
 const Message = require("./routes/Message");
 const Profile = require("./routes/Profile");
+const API = require("./routes/API");
 
 const mongoose = require("mongoose")
 const bodyparser = require("body-parser")
@@ -18,10 +20,11 @@ if(err){
 }console.log("Connected to server")
 })
 
+app.use(cors())
 app.use(bodyparser.json())
 app.use(cookieParser())
 app.use(bodyparser.urlencoded({extended:true}))
-app.use("/chat",Auth,Groups,Message,Profile,Events)
+app.use("/chat",Auth,Groups,Message,Profile,Events,API)
 
 
 

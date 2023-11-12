@@ -1,10 +1,14 @@
 const app = require("../app.js")
-const io = require("socket.io")(app)
+const http = require('http').createServer(app);
+const io = require("socket.io")(http)
 const express = require("express")
 const router = express.Router();
 const {sessions} = require("./Sessions")
 const Messages = require("../models/Messages")
 
+http.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
 router.post('/message', async (req, res) => {
 
     if (!req.cookies) {
@@ -42,10 +46,13 @@ router.post('/message', async (req, res) => {
   
       await message.save();
     
-      // Emit a socket.io event to notify the recipient of the new message.
-      io.to(reciever).emit('new message', message);
-      return res.send(message);
-    });
+     // Emit a socket.io event to notify the recipient of the new message
+  io.to(reciever).emit('new message', message);
+
+  res.send(message);
+          
+      });
+    
     
     router.get('/messages', async (req, res) => {
       if (!req.cookies) {

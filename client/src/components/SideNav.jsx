@@ -9,13 +9,14 @@ import {
   HiOutlinePlusSm,
   HiShoppingBag,
   HiTable,
+  HiUser
 } from 'react-icons/hi';
 import { twMerge } from 'tailwind-merge';
 
 export default function SideNav(){
     return (
         <Flowbite>
-        <Sidebar aria-label="Sidebar with multi-level dropdown example" >
+        <Sidebar aria-label="Sidebar with multi-level dropdown example">
           <Sidebar.Items>
             <Sidebar.ItemGroup>
               <Sidebar.Item icon={HiChartPie}>
@@ -37,6 +38,7 @@ export default function SideNav(){
                 Create Group
                 </Link>
                 </Sidebar.Item>
+
                 <Sidebar.Item>
                 <Link to = "/joinGroup">
                 Join Group
@@ -103,6 +105,18 @@ export default function SideNav(){
               <Sidebar.Item icon={HiArrowSmRight}>
               <Link to = "/login">
                 Login
+                </Link>
+              </Sidebar.Item>
+              <Sidebar.Item icon={HiTable}>
+              <Link to = "/signup">
+                Signup
+                </Link>
+              </Sidebar.Item>
+
+
+              <Sidebar.Item icon={HiUser}>
+              <Link to = "/">
+                Friends
                 </Link>
               </Sidebar.Item>
               <Sidebar.Item icon={HiTable}>
