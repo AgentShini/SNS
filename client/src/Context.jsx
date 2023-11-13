@@ -5,6 +5,7 @@ const DataContext = createContext();
 const DataContextProvider = ({children}) =>{
     const [users,setUsers] = useState([])
     const [groups,setGroups] = useState([])
+    const [events,setEvents] = useState([])
     const [activeDropdowns, setActiveDropdowns] = useState({});
     const [SearchData,SetSearch] = useState('')
     const [SearchResult,SetSearchResult] = useState([])
@@ -13,10 +14,10 @@ const DataContextProvider = ({children}) =>{
 
     
   
-      const FetchAllUsers =()=>{
+      const FetchAllUsers =async()=>{
         if(users.length === 0){
             try {
-        axios.get('http://127.0.0.1:5000/chat/usernames')
+        await axios.get('http://127.0.0.1:5000/chat/usernames')
         .then((response) => {
           setUsers(response.data);
             SetSearchResult(response.data)
@@ -32,19 +33,33 @@ const DataContextProvider = ({children}) =>{
       }
 
 
-      const FetchGroups =()=>{
+      const FetchGroups =async()=>{
         try {
-    axios.get('http://127.0.0.1:5000/chat/usernames')
+    await axios.get('http://127.0.0.1:5000/chat/groups')
     .then((response) => {
-      setUsers(response.data);
-        SetSearchResult(response.data)
+      setGroups(response.data);
     })
     .catch((error) => {
-      console.error('Error fetching usernames:', error);
+      console.error('Error fetching groups:', error);
     });
 } catch (error) {
     console.log(error.response)
     
+}
+}
+
+const FetchEvents =async ()=>{
+  try {
+await axios.get('http://127.0.0.1:5000/chat/events')
+.then((response) => {
+setEvents(response.data);
+})
+.catch((error) => {
+console.error('Error fetching events:', error);
+});
+} catch (error) {
+console.log(error.response)
+
 }
 }
 
@@ -90,14 +105,15 @@ const DataContextProvider = ({children}) =>{
 
       useEffect(() => {
         FetchAllUsers();
-     
+        FetchGroups();
+        FetchEvents();
          },[]);
    
 
     return(
         <DataContext.Provider value={{users,FetchAllUsers,setUsers,
             activeDropdowns, setActiveDropdowns, SearchData, SetSearch, SearchResult,
-            toggleDropdown,FetchUsers,Refresh,
+            toggleDropdown,FetchUsers,Refresh,groups,events,
              SetSearchResult}}>
             {children}
         </DataContext.Provider>

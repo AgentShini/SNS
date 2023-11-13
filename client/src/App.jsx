@@ -11,8 +11,8 @@ import SimpleBar from 'simplebar-react'
 import InactiveChat from './Pages/InactiveChat'
 import CreateGroup from './Pages/CreateGroup'
 import CreateEvent from './Pages/CreateEvent'
-import JoinGroup from './Pages/JoinGroup'
-import JoinEvent from './Pages/JoinEvent'
+// import JoinGroup from './Pages/JoinGroup'
+// import JoinEvent from './Pages/JoinEvent'
 import AllGroups from './Pages/AllGroups'
 import AllEvents from './Pages/AllEvents'
 import Chat from "./Pages/Chat"
@@ -38,8 +38,8 @@ function App() {
 
     <Route path='/Groups' element = {<AllGroups/>}/>
     <Route path='/Events' element = {<AllEvents/>}/>
-    <Route path='/joinEvent' element = {<JoinEvent/>}/>
-    <Route path='/joinGroup' element = {<JoinGroup/>}/>
+    {/* <Route path='/joinEvent' element = {<JoinEvent/>}/>
+    <Route path='/joinGroup' element = {<JoinGroup/>}/> */}
     <Route path='/' element = {<Home/>}/>
     <Route path='/createGroup' element = {<CreateGroup/>}/>
     <Route path='/createEvent' element = {<CreateEvent/>}/>

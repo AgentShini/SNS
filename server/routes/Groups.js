@@ -178,44 +178,6 @@ return  res.status(200).json({message:"Exited Group"})
 
 })
 
-  router.get("/groups",async(req,res)=>{
-    if (!req.cookies) {
-      res.status(401).json({message:"Unauthorized"})
-      return
-  }
-  
-  const sessionToken = req.cookies['session_token']
-  if (!sessionToken) {
-    res.status(401).json({message:"Unauthorized"})
-    return
-  }
-  userSession = sessions[sessionToken]  
-     // We then get the session of the user from our session map
-      // that we set in the signinHandler
-      if (!userSession) {
-          // If the session token is not present in session map, return an unauthorized error
-          res.status(401).json({message:"Unauthorized"})
-          return
-      }
-      // if the session has expired, return an unauthorized error, and delete the 
-      // session from our map
-      if (userSession.isExpired()) {
-          delete sessions[sessionToken]
-          res.status(401).json({message:"Unauthorized"})
-          return
-      }      
-      const groups = await GroupMembers.find({'members':{
-        $elemMatch:{
-          'name':userSession.username
-        }
-  }})
-  if(groups.length == 0){
-    return res.status(401).json({message:"No groups"})
-  }
-  return res.status(401).json({message:groups})
-
-
-  })
 
 
 

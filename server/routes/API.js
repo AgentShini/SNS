@@ -11,7 +11,7 @@ router.get("/usernames",async(req,res)=>{
 })
 
 router.get("/groups",async(req,res)=>{
-    const groups = await Groups.find({})
+    const groups = await Group.find({})
     return res.json(groups)
 })
 

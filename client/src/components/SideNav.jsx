@@ -40,11 +40,6 @@ export default function SideNav(){
                 </Sidebar.Item>
 
                 <Sidebar.Item>
-                <Link to = "/joinGroup">
-                Join Group
-                </Link>
-                </Sidebar.Item>
-                <Sidebar.Item>
                 <Link to = "/Groups">
                  Groups
                 </Link>
@@ -66,11 +61,7 @@ export default function SideNav(){
                 Create Event
                 </Link>
                 </Sidebar.Item>
-                <Sidebar.Item>
-                <Link to = "/joinEvent">
-                Join Event
-                </Link>
-                </Sidebar.Item>
+              
                 <Sidebar.Item>
                 <Link to = "/Events">
                 Events

@@ -1,66 +1,27 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
+import {DataContext} from "../Context"
+
 export default function GroupsIn(){
-  const groups= [
-    {
-      "name":"Food Group",
-      "date_joined":"JAN-06-2022",
-      "members":"45"
-    }, {
-      "name": "Food Group",
-      "date_joined": "JAN-06-2022",
-      "members": "45"
-    },
-    {
-      "name": "Food Group",
-      "date_joined": "FEB-15-2022",
-      "members": "53"
-    },
-    {
-      "name": "Food Group",
-      "date_joined": "MAR-22-2022",
-      "members": "62"
-    },
-    {
-      "name": "Food Group",
-      "date_joined": "APR-10-2022",
-      "members": "70"
-    },
-    {
-      "name": "Food Group",
-      "date_joined": "MAY-29-2022",
-      "members": "78"
-    },
-    {
-      "name": "Food Group",
-      "date_joined": "JUN-14-2022",
-      "members": "87"
-    },
-    {
-      "name": "Food Group",
-      "date_joined": "JUL-27-2022",
-      "members": "95"
-    },
-    {
-      "name": "Food Group",
-      "date_joined": "AUG-04-2022",
-      "members": "102"
-    },
-    {
-      "name": "Food Group",
-      "date_joined": "SEP-19-2022",
-      "members": "110"
-    },
-    {
-      "name": "Food Group",
-      "date_joined": "OCT-08-2022",
-      "members": "118"
-    }
-  ]
-  const [leaveGroups, setleaveGroups] = useState({});
+const {groups} = useContext(DataContext)
+
+  const [joinGroups, setjoinGroups] = useState({});
+  function formatDate(dateString) {
+    const rawDate = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZoneName: 'short',
+    };
+    return rawDate.toLocaleDateString('en-US', options);
+  }
 
 
-  const leaveGroup = (index) => {
-    setleaveGroups((prevState) => ({
+  const joinGroup = (index) => {
+    setjoinGroups((prevState) => ({
       ...prevState,
       [index]: !prevState[index],
     }));
@@ -73,8 +34,8 @@ export default function GroupsIn(){
         <thead>
           <tr>
             <th>Group Name</th>
-            <th>Date Joined</th>
-            <th>Members</th>
+            <th>Date Created</th>
+            <th>Access Code</th>
             <th></th>
           </tr>
         </thead>
@@ -90,14 +51,14 @@ export default function GroupsIn(){
               </div>
             </td>
             <td>
-              {groups.date_joined}
+              {formatDate(groups.creation_date)}
               <br/>
             </td>
             <th>
-            <div className="font-bold">{groups.members}</div>
+            <div className="font-bold">{groups.access_code}</div>
             </th>
             <th>
-              <button onClick={() => leaveGroup(index)}className="btn btn-ghost btn-xs">Leave Group</button>
+              <button onClick={() => joinGroup(index)}className="btn btn-ghost btn-xs">Join Group</button>
             </th>
           </tr>
             ))}
