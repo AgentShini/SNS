@@ -1,5 +1,8 @@
 import SendMessage from "./SendMessage"
+
 export default function Messages(){
+
+
     return(
         <div className="row-span-2 col-span-4 overflow-auto">
             <div>

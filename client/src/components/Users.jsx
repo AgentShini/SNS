@@ -1,67 +1,49 @@
 
 import React, { useState,useEffect,useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
-const {users} = useContext(DataContext)
 export default function Users(){
-  const [activeDropdowns, setActiveDropdowns] = useState({});
-  const [addFriend, setAddFriend] = useState({});
-  const [SearchData,SetSearch] = useState('')
-  const [SearchResult,SetSearchResult] = useState([])
-  const [users,SetUsers] = useState([]);
-  
+  const {
+    activeDropdowns,
+   SearchData, SearchResult, FetchUsers, toggleDropdown
+   } = useContext(DataContext)
+   const [addFriend, setAddFriend] = useState({});
 
-  const fetchData = async() =>{
-    if(users.length === 0){
-    try {
-        const response = await fetch('./data.json');
-        const data = await response.json();
-        SetUsers(data);
-        SetSearchResult(data);
-    } catch (error) {
-        console.log(error.response)
-        
-    }
-}
-}
- 
+   const navigate = useNavigate();
 
 
-    const FetchUsers= async(e) =>{
-        const username = e.target.value;
-        console.log(username)
-        SetSearch(username)
-        const data = users;
-       console.log(username)
-        const documents = data.filter((documents)=> documents.username.toLowerCase().includes(username));
-        SetSearchResult(documents);
-    }
-
-      
-  const toggleDropdown = (index) => {
-    setActiveDropdowns((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-  };
-
-  const AddFriend = (index) => {
+   const AddFriend = (index, id) => {
     setAddFriend((prevState) => ({
       ...prevState,
       [index]: !prevState[index],
     }));
-    console.log(index)
+    console.log(id); 
+      navigate(`/Chat`)
   };
 
 
+
+  function formatDate(dateString) {
+    const rawDate = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZoneName: 'short',
+    };
+    return rawDate.toLocaleDateString('en-US', options);
+  }
+  
     
-  useEffect(()=>{
-    fetchData();
-},[])
+ 
 
 
    
     return(
-        <div className="mx-auto max-w-7xl px-1 sm:px-6 lg:px-0" style={{width:"100vw",height:"100vh"}}>
+        <div className="mx-auto max-w-7xl px-1 sm:px-6 lg:px-0" style={{width:"100vw",height:"100vh",overflow:"scroll"}}>
             <section className="bg-gray-50 dark:bg-gray-700 p-3 sm:p-5">
             <h1 className="text-3xl font-bold tracking-tight text-gray-500 px-4 py-3">Current Users</h1>
     <div className="mx-auto max-w-screen-xl px-4 lg:px-12" >
@@ -88,7 +70,7 @@ export default function Users(){
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                    
                         <tr>
-                            <th scope="col" className="px-4 py-3">FULLNAME</th>
+                            <th scope="col" className="px-4 py-3">EMAIL</th>
                             <th scope="col" className="px-4 py-3">USERNAME</th>
                             <th scope="col" className="px-4 py-3">DATE JOINED</th>
                             <th scope="col" className="px-4 py-3">
@@ -100,10 +82,10 @@ export default function Users(){
                     {SearchResult.map((user, index) => (
           <tr key={index} className="border-b dark:border-gray-700">
             <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              {user.fullname}
+              {user.email}
             </th>
             <td className="px-4 py-3">{user.username}</td>
-            <td className="px-4 py-3">{user.date_joined}</td>
+            <td className="px-4 py-3">{formatDate(user.date_joined)}</td>
             <td className="px-4 py-3 flex items-center justify-end">
               <button
                 onClick={() => toggleDropdown(index)}
@@ -119,7 +101,7 @@ export default function Users(){
                   activeDropdowns[index] ? '' : 'hidden'
                 }`}
               >
-                 <button onClick={()=>AddFriend(index)} className=" text-md text-gray-700 dark:text-gray-200 block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                 <button onClick={()=>AddFriend(index,user._id)} id = {user._id} className=" text-md text-gray-700 dark:text-gray-200 block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                      Message
                     </button>
             
