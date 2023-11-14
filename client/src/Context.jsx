@@ -82,6 +82,8 @@ console.log(error.response)
     }
 }
 
+
+
     const FetchUsers= async(e) =>{
         const username = e.target.value;
         console.log(username)
@@ -113,7 +115,7 @@ console.log(error.response)
     return(
         <DataContext.Provider value={{users,FetchAllUsers,setUsers,
             activeDropdowns, setActiveDropdowns, SearchData, SetSearch, SearchResult,
-            toggleDropdown,FetchUsers,Refresh,groups,events,
+            toggleDropdown,FetchUsers,Refresh,groups,events, FetchGroups, FetchEvents,
              SetSearchResult}}>
             {children}
         </DataContext.Provider>

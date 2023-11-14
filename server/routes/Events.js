@@ -97,6 +97,7 @@ router.post("/createEvent",async(req,res)=>{
 
       if(event_missed.end_date < Date.now()){
         res.status(401).json({message:"Event Ended"});
+        return
       }
 
       if(joined){

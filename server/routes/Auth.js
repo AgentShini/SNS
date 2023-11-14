@@ -55,7 +55,15 @@ router.post("/register",async(req,res)=>{
     
     // In the response, set a cookie on the client with the name "session_cookie"
     // and the value as the UUID we generated. We also set the expiry time
-    res.cookie("session_token", sessionToken, { expires: expiresAt })
+    res.cookie('session_token', sessionToken, {
+      expires: expiresAt,
+      domain: '127.0.0.1', // or 'localhost'
+      path: '/', // Set to the path where the cookie should be accessible
+      secure: false, // Set to true if you use HTTPS in development
+      httpOnly: true, // Recommended for security, prevents client-side access
+      sameSite:'strict',
+    }); 
+    
       }catch(error){
           return res.status(401).send(error.message);
       }
@@ -158,8 +166,14 @@ router.get("/access",(req,res)=>{
           
           // In the response, set a cookie on the client with the name "session_cookie"
           // and the value as the UUID we generated. We also set the expiry time
-          res.cookie("session_token", sessionToken, { expires: expiresAt })
-            return res.status(200).json({ message: "User Logged in Successfully" });
+          res.cookie('session_token', sessionToken, {
+            expires: expiresAt,
+            domain: '127.0.0.1', // or 'localhost'
+            path: '/', // Set to the path where the cookie should be accessible
+            secure: false, // Set to true if you use HTTPS in development
+            httpOnly: true, // Recommended for security, prevents client-side access
+            sameSite:'strict',
+          });            return res.status(200).json({ message: "User Logged in Successfully" });
           }
           
           console.log(err);

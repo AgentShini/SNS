@@ -20,7 +20,13 @@ if(err){
 }console.log("Connected to server")
 })
 
-app.use(cors())
+const corsOptions = {
+  origin: 'http://127.0.0.1:5173',
+  credentials: true, // Enable credentials (cookies, etc.)
+};
+
+app.use(cors(corsOptions));
+
 app.use(bodyparser.json())
 app.use(cookieParser())
 app.use(bodyparser.urlencoded({extended:true}))
