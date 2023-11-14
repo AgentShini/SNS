@@ -80,7 +80,7 @@ export default function EventsIn(){
               </div>
             </td>
             <td>
-              {events.creation_date}
+              {formatDate(events.creation_date)}
               <br/>
             </td>
             <th>

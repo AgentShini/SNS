@@ -124,7 +124,15 @@ router.get("/access",(req,res)=>{
   
   delete sessions[sessionToken]
   
-  return res.cookie("session_token", "", { expires: new Date() }).json({message:"Logged out"})
+
+  return res.cookie('session_token', "", {
+    expires: new Date(),
+    domain: '127.0.0.1', // or 'localhost'
+    path: '/', // Set to the path where the cookie should be accessible
+    secure: false, // Set to true if you use HTTPS in development
+    httpOnly: true, // Recommended for security, prevents client-side access
+    sameSite:'strict',
+  }).json({message:"Logged out"});  
   
   })
   

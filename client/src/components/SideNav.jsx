@@ -1,31 +1,54 @@
 
 import { Sidebar, DarkThemeToggle, Flowbite, Avatar  } from 'flowbite-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
-  HiArrowSmRight,
-  HiChartPie,
-  HiInbox,
+  HiLogout,
+  HiLogin,
+  HiChatAlt,
+  HiOutlineUserAdd,
   HiOutlineMinusSm,
   HiOutlinePlusSm,
-  HiShoppingBag,
-  HiTable,
-  HiUser
+  HiSpeakerphone,
+  HiUser,
+  HiUserGroup
 } from 'react-icons/hi';
 import { twMerge } from 'tailwind-merge';
 
 export default function SideNav(){
+  const navigate = useNavigate()
+
+
+  const handleSubmit = async (e) => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/chat/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (response.status === 200) {
+        alert("Logged Out")
+        navigate(`/`)
+    } else {
+      
+        const errorData = await response.json();
+        alert(errorData.message)
+        console.error('Error:', errorData.message);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
     return (
         <Flowbite>
         <Sidebar aria-label="Sidebar with multi-level dropdown example">
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-              <Sidebar.Item icon={HiChartPie}>
-                <Link to = "/profile">
-                Profile
-                </Link>
-              </Sidebar.Item>
+             
               <Sidebar.Collapse
-                icon={HiShoppingBag}
+                icon={HiUserGroup}
                 label="Groups"
                 renderChevronIcon={(theme, open) => {
                   const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
@@ -48,7 +71,7 @@ export default function SideNav(){
               </Sidebar.Collapse>
 
               <Sidebar.Collapse
-                icon={HiShoppingBag}
+                icon={HiSpeakerphone}
                 label="Events"
                 renderChevronIcon={(theme, open) => {
                   const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
@@ -71,7 +94,7 @@ export default function SideNav(){
 
               <Sidebar.Collapse
 
-                icon= {HiInbox}
+                icon= {HiChatAlt}
                 label="Messages"
                 renderChevronIcon={(theme, open) => {
                   const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
@@ -93,12 +116,12 @@ export default function SideNav(){
 
 
             
-              <Sidebar.Item icon={HiArrowSmRight}>
+              <Sidebar.Item icon={HiLogin}>
               <Link to = "/login">
                 Login
                 </Link>
               </Sidebar.Item>
-              <Sidebar.Item icon={HiTable}>
+              <Sidebar.Item icon={HiOutlineUserAdd}>
               <Link to = "/signup">
                 Signup
                 </Link>
@@ -110,10 +133,11 @@ export default function SideNav(){
                 Friends
                 </Link>
               </Sidebar.Item>
-              <Sidebar.Item icon={HiTable}>
-              <Link to = "/signup">
-                Signup
-                </Link>
+             
+              <Sidebar.Item icon={HiLogout}>
+              <button onClick={handleSubmit} >
+                Log out
+                </button>
               </Sidebar.Item>
 
             <DarkThemeToggle />
