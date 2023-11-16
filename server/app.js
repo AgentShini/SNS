@@ -13,6 +13,15 @@ const bodyparser = require("body-parser")
 require("dotenv").config()
 const app = express();
 const port = 5000;
+
+
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  credentials: true, // Enable credentials (cookies, etc.)
+};
+
+app.use(cors(corsOptions));
+
 mongoose.connect(process.env.URI)
 mongoose.connection.on('connected',(err)=>{
 if(err){
@@ -20,16 +29,11 @@ if(err){
 }console.log("Connected to server")
 })
 
-const corsOptions = {
-  origin: 'http://127.0.0.1:5173',
-  credentials: true, // Enable credentials (cookies, etc.)
-};
-
-app.use(cors(corsOptions));
 
 app.use(bodyparser.json())
 app.use(cookieParser())
 app.use(bodyparser.urlencoded({extended:true}))
+
 app.use("/chat",Auth,Groups,Message,Profile,Events,API)
 
 
