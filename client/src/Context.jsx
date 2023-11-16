@@ -10,14 +10,28 @@ const DataContextProvider = ({children}) =>{
     const [SearchData,SetSearch] = useState('')
     const [SearchResult,SetSearchResult] = useState([])
     const [activeUser, setActiveUser] = useState("")
+    const [activeUserState, setActiveUserState] = useState(false)
 
 
-    
+    const SetUsername=(username)=>{
+      setActiveUser(username)
+    }
+
+    console.log("User is",activeUser)
+
+
+    const SetUsernameState=()=>{
+      setActiveUserState(!activeUserState)
+    }
+
+    console.log("State is",activeUserState)
   
-      const FetchAllUsers =async()=>{
+  
+  
+    const FetchAllUsers =async()=>{
         if(users.length === 0){
             try {
-        await axios.get('http://127.0.0.1:5000/chat/usernames')
+        await axios.get('http://localhost:5000/chat/usernames')
         .then((response) => {
           setUsers(response.data);
             SetSearchResult(response.data)
@@ -35,7 +49,7 @@ const DataContextProvider = ({children}) =>{
 
       const FetchGroups =async()=>{
         try {
-    await axios.get('http://127.0.0.1:5000/chat/groups')
+    await axios.get('http://localhost:5000/chat/groups')
     .then((response) => {
       setGroups(response.data);
     })
@@ -50,7 +64,7 @@ const DataContextProvider = ({children}) =>{
 
 const FetchEvents =async ()=>{
   try {
-await axios.get('http://127.0.0.1:5000/chat/events')
+await axios.get('http://localhost:5000/chat/events')
 .then((response) => {
 setEvents(response.data);
 })
@@ -68,7 +82,7 @@ console.log(error.response)
 
       const Refresh =()=>{
             try {
-        axios.get('http://127.0.0.1:5000/chat/usernames')
+        axios.get('http://localhost:5000/chat/usernames')
         .then((response) => {
           setUsers(response.data);
             SetSearchResult(response.data)
@@ -116,7 +130,7 @@ console.log(error.response)
         <DataContext.Provider value={{users,FetchAllUsers,setUsers,
             activeDropdowns, setActiveDropdowns, SearchData, SetSearch, SearchResult,
             toggleDropdown,FetchUsers,Refresh,groups,events, FetchGroups, FetchEvents,
-             SetSearchResult}}>
+             SetSearchResult, SetUsername, SetUsernameState, activeUserState, activeUser}}>
             {children}
         </DataContext.Provider>
     )

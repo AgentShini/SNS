@@ -1,6 +1,10 @@
 
 import { Sidebar, DarkThemeToggle, Flowbite, Avatar  } from 'flowbite-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { DataContext } from '../Context';
+
+
 import {
   HiLogout,
   HiLogin,
@@ -15,12 +19,14 @@ import {
 import { twMerge } from 'tailwind-merge';
 
 export default function SideNav(){
+  const {activeUserState,SetUsername,SetUsernameState} = useContext(DataContext)
+
   const navigate = useNavigate()
 
 
   const handleSubmit = async (e) => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/chat/logout', {
+      const response = await fetch('http://localhost:5000/chat/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,7 +35,9 @@ export default function SideNav(){
       });
 
       if (response.status === 200) {
-        alert("Logged Out")
+        alert("Goodbye")
+        SetUsername(null)
+        SetUsernameState()
         navigate(`/`)
     } else {
       
@@ -41,12 +49,14 @@ export default function SideNav(){
       console.error('Error:', error.message);
     }
   };
+  
+
     return (
         <Flowbite>
         <Sidebar aria-label="Sidebar with multi-level dropdown example">
           <Sidebar.Items>
+            { !activeUserState ?(
             <Sidebar.ItemGroup>
-             
               <Sidebar.Collapse
                 icon={HiUserGroup}
                 label="Groups"
@@ -56,11 +66,6 @@ export default function SideNav(){
                   return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
                 }}
               >
-                <Sidebar.Item >
-                <Link to = "/createGroup">
-                Create Group
-                </Link>
-                </Sidebar.Item>
 
                 <Sidebar.Item>
                 <Link to = "/Groups">
@@ -79,11 +84,7 @@ export default function SideNav(){
                   return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
                 }}
               >
-                <Sidebar.Item >
-                <Link to = "/createEvent">
-                Create Event
-                </Link>
-                </Sidebar.Item>
+           
               
                 <Sidebar.Item>
                 <Link to = "/Events">
@@ -92,27 +93,10 @@ export default function SideNav(){
                 </Sidebar.Item>
               </Sidebar.Collapse>
 
-              <Sidebar.Collapse
-
-                icon= {HiChatAlt}
-                label="Messages"
-                renderChevronIcon={(theme, open) => {
-                  const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
-    
-                  return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
-                }}
-              >
-                <Sidebar.Item>
-                <Avatar img="https://www.flowbite-react.com/images/people/profile-picture-5.jpg" rounded>
-              <div className="space-y-1 font-medium dark:text-white"  style ={{pointer:"cursor"}}>
-                <div>Elon Musk </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Hey there....!!</div>
-              </div>
-            </Avatar>
-              </Sidebar.Item>
+           
+           
     
                 
-              </Sidebar.Collapse>
 
 
             
@@ -134,17 +118,107 @@ export default function SideNav(){
                 </Link>
               </Sidebar.Item>
              
-              <Sidebar.Item icon={HiLogout}>
-              <button onClick={handleSubmit} >
-                Log out
-                </button>
-              </Sidebar.Item>
+             
 
             <DarkThemeToggle />
 
             </Sidebar.ItemGroup>
+) :(
+
+
+//Logged IN
+
+
+  <Sidebar.ItemGroup>
+  <Sidebar.Collapse
+    icon={HiUserGroup}
+    label="Groups"
+    renderChevronIcon={(theme, open) => {
+      const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
+
+      return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
+    }}
+  >
+    <Sidebar.Item >
+    <Link to = "/createGroup">
+    Create Group
+    </Link>
+    </Sidebar.Item>
+
+    <Sidebar.Item>
+    <Link to = "/Groups">
+     Groups
+    </Link>
+    </Sidebar.Item>
+    
+  </Sidebar.Collapse>
+
+  <Sidebar.Collapse
+    icon={HiSpeakerphone}
+    label="Events"
+    renderChevronIcon={(theme, open) => {
+      const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
+
+      return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
+    }}
+  >
+    <Sidebar.Item >
+    <Link to = "/createEvent">
+    Create Event
+    </Link>
+    </Sidebar.Item>
+  
+    <Sidebar.Item>
+    <Link to = "/Events">
+    Events
+    </Link>
+    </Sidebar.Item>
+  </Sidebar.Collapse>
+
+  <Sidebar.Collapse
+
+    icon= {HiChatAlt}
+    label="Messages"
+    renderChevronIcon={(theme, open) => {
+      const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
+
+      return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? 'on' : 'off'])} />;
+    }}
+  >
+    <Sidebar.Item>
+    <Avatar img="https://www.flowbite-react.com/images/people/profile-picture-5.jpg" rounded>
+  <div className="space-y-1 font-medium dark:text-white"  style ={{pointer:"cursor"}}>
+    <div>Elon Musk </div>
+    <div className="text-sm text-gray-500 dark:text-gray-400">Hey there....!!</div>
+  </div>
+</Avatar>
+  </Sidebar.Item>
+
+    
+  </Sidebar.Collapse>
+
+
+  <Sidebar.Item icon={HiUser}>
+  <Link to = "/">
+    Friends
+    </Link>
+  </Sidebar.Item>
+ 
+  <Sidebar.Item icon={HiLogout}>
+  <button onClick={handleSubmit} >
+    Log out
+    </button>
+  </Sidebar.Item>
+
+<DarkThemeToggle />
+
+</Sidebar.ItemGroup>
+
+)
+}
           </Sidebar.Items>
         </Sidebar>
         </Flowbite>
       );
-    }
+              }
+  

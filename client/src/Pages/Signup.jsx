@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { DataContext } from '../Context';
 
 export default function Signup(){
-    const {Refresh} = useContext(DataContext)
+    const {Refresh,SetUsername, SetUsernameState} = useContext(DataContext)
 
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -17,7 +17,7 @@ export default function Signup(){
         e.preventDefault();
     
         try {
-          const response = await fetch('http://127.0.0.1:5000/chat/register', {
+          const response = await fetch('http://localhost:5000/chat/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -27,8 +27,10 @@ export default function Signup(){
           });
     
           if (response.status === 200) {
+            SetUsername(username)
+            SetUsernameState()
             Refresh()
-            alert("SUCCESS")
+            alert("Welcome")
             navigate(`/`)
         } else {
             // Registration failed, handle the error response
