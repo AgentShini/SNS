@@ -1,11 +1,12 @@
 
-import  { useState,useEffect,useContext } from 'react';
+import  { useState,useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
+import {socketIO} from "../App"
 export default function Users(){
   const {
     activeDropdowns,
-   SearchData, SearchResult, FetchUsers, toggleDropdown
+   SearchData, SearchResult, FetchUsers, toggleDropdown, setRoom, activeUser, room, setRecieverUsername
    } = useContext(DataContext)
    const [addFriend, setAddFriend] = useState({});
 
@@ -36,6 +37,11 @@ export default function Users(){
     };
     return rawDate.toLocaleDateString('en-US', options);
   }
+
+  const updateRoomID =(activeUser,id)=>{
+    setRoom(activeUser + id)
+    socketIO.emit('join_room', { activeUser, room });
+  } 
   
     
  
@@ -101,7 +107,7 @@ export default function Users(){
                   activeDropdowns[index] ? '' : 'hidden'
                 }`}
               >
-                 <button onClick={()=>AddFriend(index,user._id)} id = {user._id} className=" text-md text-gray-700 dark:text-gray-200 block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                 <button onClick={()=>[AddFriend(index,user._id)][updateRoomID(activeUser,user._id)][setRecieverUsername(user.username)]} id = {user._id} className=" text-md text-gray-700 dark:text-gray-200 block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                      Message
                     </button>
             

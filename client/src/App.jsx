@@ -3,7 +3,7 @@ import Login from './Pages/Login'
 import Home from './Pages/Home'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-
+import io from 'socket.io-client'; 
 import InactiveChat from './Pages/InactiveChat'
 import CreateGroup from './Pages/CreateGroup'
 import CreateEvent from './Pages/CreateEvent'
@@ -15,8 +15,9 @@ import Chat from "./Pages/Chat"
 import EventChat from "./Pages/EventChat"
 import GroupChat from './Pages/GroupChat'
 
+const socketIO = io.connect('http://localhost:5000')
 
-
+export  { socketIO };
 
 
 

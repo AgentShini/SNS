@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 const DataContext = createContext();
 const DataContextProvider = ({children}) =>{
@@ -11,8 +10,17 @@ const DataContextProvider = ({children}) =>{
     const [SearchResult,SetSearchResult] = useState([])
     const [activeUser, setActiveUser] = useState("")
     const [activeUserState, setActiveUserState] = useState(false)
+    const [socket, setSocket] = useState("");
+    const [room, setRoom] = useState("");
+    const [reciever_username, setRecieverUsername] = useState("");
 
 
+
+    
+
+
+    console.log("Sender is", activeUser)
+    console.log("Reciever is",reciever_username)
     const SetUsername=(username)=>{
       setActiveUser(username)
     }
@@ -124,13 +132,15 @@ console.log(error.response)
         FetchGroups();
         FetchEvents();
          },[]);
-   
+   console.log("ROom is",room)
 
     return(
         <DataContext.Provider value={{users,FetchAllUsers,setUsers,
             activeDropdowns, setActiveDropdowns, SearchData, SetSearch, SearchResult,
             toggleDropdown,FetchUsers,Refresh,groups,events, FetchGroups, FetchEvents,
-             SetSearchResult, SetUsername, SetUsernameState, activeUserState, activeUser}}>
+             SetSearchResult, SetUsername, SetUsernameState, activeUserState, activeUser, setRoom,
+              socket, setSocket,reciever_username, setRecieverUsername
+            }}>
             {children}
         </DataContext.Provider>
     )
