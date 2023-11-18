@@ -31,11 +31,13 @@ router.post('/message', async (req, res) => {
           res.status(401).json({message:"Unauthorized"})
           return
       }
-      const {reciever,chat} = req.body
+      const {receiver,chat,room} = req.body
+    
       const message = new Messages({
         sender_username: userSession.username,
-        reciever_username: reciever,
+        reciever_username: receiver,
         message: chat,
+        roomID:room,
         date_sent: new Date(),
       });
   
@@ -74,11 +76,17 @@ router.post('/message', async (req, res) => {
             res.status(401).json({message:"Unauthorized"})
             return
         }
-      const userID = userSession.user_id
-      const messages = await Messages.find({sender_id:userID});
+      const userID = userSession.username
+      const messages = await Messages.find({sender_username:userID});
       if(messages.length == 0){
         res.status(401).json({message:"No Messages"})
       }
+     return res.send(messages);
+    });
+
+    router.get('/room_messages', async (req, res) => {
+        const {roomID} = req.query
+        const messages = await Messages.find({'roomID':roomID});
      return res.send(messages);
     });
     module.exports = router

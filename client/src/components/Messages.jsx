@@ -1,39 +1,48 @@
 import SendMessage from "./SendMessage"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import {socketIO} from "../App"
+import {DataContext} from "../Context"
+
 
 export default function Messages(){
+   const {messagesReceived, setMessagesReceived} = useContext(DataContext)
 
-  const [messagesRecieved, setMessagesReceived] = useState([]);
-  useEffect(() => {
-    socketIO.on('receive_message', (data) => {
-      console.log(data);
-      setMessagesReceived((state) => [
-        ...state,
-        {
-          message: data.message,
-          username: data.username,
-          __createdtime__: data.__createdtime__,
-        },
-      ]);
-    });
+ // const messagesColumnRef = useRef(null); // Add this
 
-	// Remove event listener on component unmount
-    return () => socketIO.off('receive_message');
-  }, [socketIO]);
+ 
+ useEffect(() => {
+  socketIO.on('receive_message', (data) => {
+    console.log(data);
+    setMessagesReceived((state) => [
+      ...state,
+      {
+        message: data.message,
+        username: data.username,
+        __createdtime__: data.__createdtime__,
+      },
+    ]);
+  });
+
+// Remove event listener on component unmount
+  return () => socketIO.off('receive_message');
+}, [socketIO]);
+  
+
+
+
 
 
     function formatDateFromTimestamp(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleString();
   }
-
+ console.log("CHatss",messagesReceived)
 
 
     return(
         <div className="row-span-2 col-span-4 overflow-auto">
         <div>
-        {messagesRecieved.map((msg,i)=>{
+        {messagesReceived.map((msg,i)=>(
         <div className="chat chat-start" key={i}>
   <div className="chat-image avatar">
     <div className="w-10 rounded-full">
@@ -41,15 +50,15 @@ export default function Messages(){
     </div>
   </div>
   <div className="chat-header">
-   {msg.username}
-    <span className="text-xs opacity-50 p-2">{formatDateFromTimestamp(msg.__createdtime__)}</span>
+   {msg.sender_username}
+    <span className="text-xs opacity-50 p-2">{formatDateFromTimestamp(msg.date_sent)}</span>
   </div>
   <div className="chat-bubble">{msg.message}</div>
   <div className="chat-footer opacity-50">
     Delivered
   </div>
 </div>
-})}
+))}
 
 {/* <div className="chat chat-end">
   <div className="chat-image avatar">

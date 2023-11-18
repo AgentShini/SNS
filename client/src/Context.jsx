@@ -12,27 +12,28 @@ const DataContextProvider = ({children}) =>{
     const [activeUserState, setActiveUserState] = useState(false)
     const [socket, setSocket] = useState("");
     const [room, setRoom] = useState("");
-    const [reciever_username, setRecieverUsername] = useState("");
+    const [receiver, setReceiver] = useState("");
+    const [messagesReceived, setMessagesReceived] = useState([]);
+    const [receiverID, setReceiverID] = useState("")
+
+
 
 
 
     
 
 
-    console.log("Sender is", activeUser)
-    console.log("Reciever is",reciever_username)
+  
     const SetUsername=(username)=>{
       setActiveUser(username)
     }
 
-    console.log("User is",activeUser)
 
 
     const SetUsernameState=()=>{
       setActiveUserState(!activeUserState)
     }
 
-    console.log("State is",activeUserState)
   
   
   
@@ -123,8 +124,31 @@ console.log(error.response)
       [index]: !prevState[index],
     }));
   };
- 
 
+
+   const FetchRoomMessages = async()=>{
+    if (room !== ""){
+    try {
+      const roomID = room
+      await axios.get(`http://localhost:5000/chat/room_messages?roomID=${encodeURIComponent(roomID)}`)
+      .then((response) => {
+        setMessagesReceived(response.data)
+
+      })
+      .catch((error) => {
+        console.error('Error fetching messages:', error);
+      });
+  } catch (error) {
+      console.log(error.response)
+      
+  }
+  }
+  }   
+
+  
+  useEffect(() => {
+    FetchRoomMessages();
+  }, [room]);
 
 
       useEffect(() => {
@@ -132,14 +156,17 @@ console.log(error.response)
         FetchGroups();
         FetchEvents();
          },[]);
+
    console.log("ROom is",room)
+   console.log("Messages are",messagesReceived)
+
 
     return(
         <DataContext.Provider value={{users,FetchAllUsers,setUsers,
             activeDropdowns, setActiveDropdowns, SearchData, SetSearch, SearchResult,
             toggleDropdown,FetchUsers,Refresh,groups,events, FetchGroups, FetchEvents,
-             SetSearchResult, SetUsername, SetUsernameState, activeUserState, activeUser, setRoom,
-              socket, setSocket,reciever_username, setRecieverUsername
+             SetSearchResult, SetUsername, SetUsernameState, activeUserState, activeUser, setRoom, room,
+              socket, setSocket,receiver, setReceiver,messagesReceived, setMessagesReceived,receiverID, setReceiverID
             }}>
             {children}
         </DataContext.Provider>

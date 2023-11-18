@@ -19,7 +19,7 @@ import {
 import { twMerge } from 'tailwind-merge';
 
 export default function SideNav(){
-  const {activeUserState,SetUsername,SetUsernameState} = useContext(DataContext)
+  const {activeUserState,SetUsername,SetUsernameState, setReceiver, setReceiverID, setRoom} = useContext(DataContext)
 
   const navigate = useNavigate()
 
@@ -35,10 +35,13 @@ export default function SideNav(){
       });
 
       if (response.status === 200) {
-        alert("Goodbye")
-        SetUsername(null)
+        SetUsername("")
         SetUsernameState()
-        navigate(`/`)
+        setReceiver("")
+        setRoom("")
+        setReceiverID("")
+        navigate(`/login`)
+         alert("Goodbye")
     } else {
       
         const errorData = await response.json();

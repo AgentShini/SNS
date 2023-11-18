@@ -6,22 +6,19 @@ import {socketIO} from "../App"
 export default function Users(){
   const {
     activeDropdowns,
-   SearchData, SearchResult, FetchUsers, toggleDropdown, setRoom, activeUser, room, setRecieverUsername
+   SearchData, SearchResult, FetchUsers, toggleDropdown, setRoom, activeUser, room, setReceiver,
+    setReceiverID, receiver
    } = useContext(DataContext)
-   const [addFriend, setAddFriend] = useState({});
 
    const navigate = useNavigate();
 
+   
 
-   const AddFriend = (index, id) => {
-    setAddFriend((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-    console.log(id); 
-      navigate(`/Chat`)
-  };
 
+
+
+
+ 
 
 
   function formatDate(dateString) {
@@ -38,13 +35,20 @@ export default function Users(){
     return rawDate.toLocaleDateString('en-US', options);
   }
 
-  const updateRoomID =(activeUser,id)=>{
-    setRoom(activeUser + id)
+  const updateRoomID = async (activeUser,id)=>{
+    await setRoom(activeUser + id)
     socketIO.emit('join_room', { activeUser, room });
+   
   } 
   
     
- 
+
+  const generateCommonRoomID = (userA, userB) => {
+   // Ensure symmetry by sorting user IDs before generating the room ID
+   const sortedUserIDs = [userA, userB].sort();
+   return sortedUserIDs.join('-');
+ };
+
 
 
    
@@ -107,7 +111,16 @@ export default function Users(){
                   activeDropdowns[index] ? '' : 'hidden'
                 }`}
               >
-                 <button onClick={()=>[AddFriend(index,user._id)][updateRoomID(activeUser,user._id)][setRecieverUsername(user.username)]} id = {user._id} className=" text-md text-gray-700 dark:text-gray-200 block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                 <button onClick={() => {
+  Promise.all([
+    updateRoomID(activeUser, user._id),
+    setReceiver(user.username),
+    setReceiverID(user._id),
+    setRoom(generateCommonRoomID(activeUser,user.username))
+  ])
+  navigate(`/Chat`)
+    }}
+id = {user._id} className=" text-md text-gray-700 dark:text-gray-200 block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                      Message
                     </button>
             

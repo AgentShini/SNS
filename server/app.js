@@ -21,6 +21,7 @@ let chatRoom = '';
 let allUsers = [];
 
 
+
 const corsOptions = {
   origin: 'http://localhost:5173',
   credentials: true, // Enable credentials (cookies, etc.)
