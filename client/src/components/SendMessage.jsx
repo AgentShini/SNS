@@ -3,7 +3,7 @@ import {DataContext} from "../Context"
 import {socketIO} from "../App"
 export default function SendMessage(){
     const [chat, setChat] = useState('');
-    const { activeUser, room, receiver
+    const { activeUser, room, receiver, FetchRoomMessages
        } = useContext(DataContext)
 
      
@@ -27,6 +27,7 @@ export default function SendMessage(){
             socketIO.emit('send_message', { activeUser, room, chat, __createdtime__ });
             setChat('');
             alert("Sent");
+            await FetchRoomMessages();
           } else {
             // Error submitting the message to the server, handle the error response
             const errorData = await response.json();

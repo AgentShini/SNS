@@ -5,10 +5,27 @@ import {DataContext} from "../Context"
 
 
 export default function Messages(){
-   const {messagesReceived, setMessagesReceived} = useContext(DataContext)
+   const {messagesReceived, setMessagesReceived, activeUser} = useContext(DataContext)
 
- // const messagesColumnRef = useRef(null); // Add this
+   const messagesContainerRef = useRef(null);
 
+   useEffect(() => {
+    // Scroll to the bottom when messages change
+    scrollToBottom();
+  }, [messagesReceived]);
+
+  useEffect(() => {
+    // Scroll to the bottom when the component mounts
+    scrollToBottom();
+  }, []);
+
+
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      const container = messagesContainerRef.current;
+      container.scrollTop = container.scrollHeight;
+    }
+  };
  
  useEffect(() => {
   socketIO.on('receive_message', (data) => {
@@ -40,43 +57,31 @@ export default function Messages(){
 
 
     return(
-        <div className="row-span-2 col-span-4 overflow-auto">
-        <div>
-        {messagesReceived.map((msg,i)=>(
-        <div className="chat chat-start" key={i}>
-  <div className="chat-image avatar">
-    <div className="w-10 rounded-full">
-      <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-    </div>
-  </div>
-  <div className="chat-header">
-   {msg.sender_username}
-    <span className="text-xs opacity-50 p-2">{formatDateFromTimestamp(msg.date_sent)}</span>
-  </div>
-  <div className="chat-bubble">{msg.message}</div>
-  <div className="chat-footer opacity-50">
-    Delivered
-  </div>
-</div>
-))}
-
-{/* <div className="chat chat-end">
-  <div className="chat-image avatar">
-    <div className="w-10 rounded-full mr-4">
-      <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-    </div>
-  </div>
-  <div className="chat-header">
-    Anakin
-    <span className="text-xs opacity-50 p-2">12:46</span>
-  </div>
-  <div className="chat-bubble">I hate you!</div>
-  <div className="chat-footer opacity-50">
-    Seen at 12:46
-  </div>
-</div> */}
+        <div ref={messagesContainerRef} className="row-span-2 col-span-4 overflow-auto">
+     <div className="chat-grid">
+      {messagesReceived.map((msg, i) => (
+        <div
+          className={`chat chat-start ${msg.sender_username === activeUser ? 'right' : 'left'}`}
+          key={i}
+        >
+          <div className="chat-image avatar">
+            <div className="w-10 rounded-full">
+              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="avatar" />
+            </div>
+          </div>
+          <div className="chat-content">
+            <div className="chat-header">
+              {msg.sender_username}
+              <span className="text-xs opacity-50 p-2">{formatDateFromTimestamp(msg.date_sent)}</span>
+            </div>
+            <div className="chat-bubble">{msg.message}</div>
+            <div className="chat-footer opacity-50">
+              Delivered
+            </div>
+          </div>
         </div>
-    
+      ))}
+    </div>
 
 
         <SendMessage/>

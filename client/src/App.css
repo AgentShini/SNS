@@ -1,0 +1,19 @@
+/* Add styles to your liking */
+.chat-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat {
+    /* Add general styles for each chat item */
+    display: flex;
+    align-items: flex-start; /* Default to left alignment */
+  }
+  
+  /* Styles for the right-aligned chat */
+  .right {
+    align-self: flex-end;
+  }
+  
+  /* Add additional styles for avatar, header, bubble, footer, etc. */
+  

@@ -166,7 +166,9 @@ console.log(error.response)
             activeDropdowns, setActiveDropdowns, SearchData, SetSearch, SearchResult,
             toggleDropdown,FetchUsers,Refresh,groups,events, FetchGroups, FetchEvents,
              SetSearchResult, SetUsername, SetUsernameState, activeUserState, activeUser, setRoom, room,
-              socket, setSocket,receiver, setReceiver,messagesReceived, setMessagesReceived,receiverID, setReceiverID
+              socket, setSocket,receiver, setReceiver,messagesReceived, setMessagesReceived
+              ,receiverID, setReceiverID, FetchRoomMessages
+
             }}>
             {children}
         </DataContext.Provider>
