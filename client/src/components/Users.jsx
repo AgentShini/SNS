@@ -53,7 +53,7 @@ export default function Users(){
 
    
     return(
-        <div className="mx-auto max-w-7xl px-1 sm:px-6 lg:px-0" style={{width:"100vw",height:"100vh",overflow:"scroll"}}>
+        <div style={{width:"100vw",height:"100vh",overflow:"scroll"}}>
             <section className="bg-gray-50 dark:bg-gray-700 p-3 sm:p-5">
             <h1 className="text-3xl font-bold tracking-tight text-gray-500 px-4 py-3">Current Users</h1>
     <div className="mx-auto max-w-screen-xl px-4 lg:px-12" >

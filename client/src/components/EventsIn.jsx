@@ -31,7 +31,7 @@ export default function EventsIn(){
     setAccessCode(updatedAccessCode);
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/chat/joinEvent', {
+      const response = await fetch('http://localhost:5000/chat/joinEvent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default function EventsIn(){
   };
 
     return(
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto xl:h-screen lg:py-0" style={{overflow:"scroll"}}>
+      <div style={{overflow:"scroll"}}>
       <table className="table">
         {/* head */}
         <thead>
@@ -70,8 +70,8 @@ export default function EventsIn(){
         </thead>
         <tbody>
          { events.map((events,index)=>(
-          <tr>
-            <td>
+          <tr key={index}>
+          <td>
               <div className="flex items-center space-x-3">
             
                 <div>

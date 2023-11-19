@@ -26,7 +26,6 @@ export default function SendMessage(){
             const __createdtime__ = Date.now();
             socketIO.emit('send_message', { activeUser, room, chat, __createdtime__ });
             setChat('');
-            alert("Sent");
             await FetchRoomMessages();
           } else {
             // Error submitting the message to the server, handle the error response

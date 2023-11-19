@@ -39,7 +39,7 @@ export default function EventInput(){
         e.preventDefault();
     
         try {
-          const response = await fetch('http://127.0.0.1:5000/chat/createEvent', {
+          const response = await fetch('http://localhost:5000/chat/createEvent', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export default function EventInput(){
           if (response.status === 200) {
             FetchEvents()
             alert("SUCCESS")
-            navigate(`/events`)
+            navigate(`/Events/Events`)
         } else {
           
             const errorData = await response.json();
@@ -72,24 +72,24 @@ return(
                   Create Event
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-              <p className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              <div className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               <Datepicker 
               title="Start Date"
               placeholder='Start Date'
               value={start_date}
               onSelectedDateChanged={handleDatePickerChange}
               />
-              </p>
+              </div>
 
 
-                        <p className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                <div className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               <Datepicker 
               title="End Date"
               placeholder='End Date'
               value={end_date}
               onSelectedDateChanged={handleDatePickerChangeEND}
               />
-              </p>
+              </div>
 
                   <div>
                       <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>

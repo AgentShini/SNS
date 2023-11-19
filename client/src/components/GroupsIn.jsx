@@ -30,7 +30,7 @@ const {groups} = useContext(DataContext)
     const updatedAccessCode = e.target.value;
     setAccessCode(updatedAccessCode);
     try {
-      const response = await fetch('http://127.0.0.1:5000/chat/joinGroup', {
+      const response = await fetch('http://localhost:5000/chat/joinGroup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const {groups} = useContext(DataContext)
 
 
     return(
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto xl:h-screen lg:py-0" style={{overflow:"scroll"}}>
+      <div style={{overflow:"scroll"}}>
       <table className="table">
         {/* head */}
         <thead>
@@ -67,7 +67,7 @@ const {groups} = useContext(DataContext)
         </thead>
         <tbody>
          { groups.map((groups,index)=>(
-          <tr>
+          <tr key={index}>
             <td>
               <div className="flex items-center space-x-3">
             
