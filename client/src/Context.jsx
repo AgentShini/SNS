@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios"
+import Cookies from 'js-cookie';
 const DataContext = createContext();
 const DataContextProvider = ({children}) =>{
     const [users,setUsers] = useState([])
@@ -15,7 +16,6 @@ const DataContextProvider = ({children}) =>{
     const [receiver, setReceiver] = useState("");
     const [messagesReceived, setMessagesReceived] = useState([]);
     const [receiverID, setReceiverID] = useState("")
-
 
 
 
@@ -144,6 +144,21 @@ console.log(error.response)
   }
   }
   }   
+
+  useEffect(() => {
+    const storedUserString = localStorage.getItem('userSession');
+
+    if (storedUserString) {
+      const storedUserObject = JSON.parse(storedUserString);
+      console.log("Session nameis",storedUserObject.username)
+     setActiveUser(storedUserObject.username)
+      setActiveUserState(true)
+      console.log('User object exists:', storedUserObject);
+    } else {
+      console.log('User object does not exist in localStorage');
+    }
+  }, []);
+
 
   
   useEffect(() => {

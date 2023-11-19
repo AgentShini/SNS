@@ -37,6 +37,13 @@ const SideNav = () => {
       });
 
       if (response.status === 200) {
+        const storedUserString = localStorage.getItem('userSession');
+
+if (storedUserString) {
+  localStorage.removeItem('userSession')
+} else {
+  console.log('User object does not exist in localStorage');
+}
         SetUsername("")
         SetUsernameState()
         setReceiver("")
@@ -176,12 +183,12 @@ const SideNav = () => {
               </div>
             )}
               <li>
-              <Link to={"/logout"} className="link">
+              <div className="link">
                 <HiLogout size={23} className="min-w-max" />
                 <button onClick={handleSubmit} >
                     Log out
                     </button>
-              </Link>
+              </div>
             </li>
           </ul>
           ) 

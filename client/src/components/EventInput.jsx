@@ -7,7 +7,7 @@ import { DataContext } from '../Context';
 export default function EventInput(){
     const {FetchEvents} = useContext(DataContext)
     const [name, setName] = useState('');
-    const [start_date, setStartDate] = useState('');
+    const [start_date, setStartDate] = useState();
     const [end_date, setEndDate] = useState('');
     const [description, setDescription] = useState('');
 

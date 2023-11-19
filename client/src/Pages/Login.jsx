@@ -25,6 +25,11 @@ export default function Login(){
           });
     
           if (response.status === 200) {
+            const userObject = {
+              username: username,
+              checkin: Date.now(),
+            };
+            localStorage.setItem('userSession', JSON.stringify(userObject));
             SetUsername(username)
             SetUsernameState()
             Refresh()

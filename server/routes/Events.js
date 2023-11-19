@@ -32,30 +32,40 @@ router.post("/createEvent",async(req,res)=>{
           res.status(401).json({message:"Unauthorized"})
           return
       }
-      const creator_id = userSession.user_id
-      const{name,description,start_date,end_date} = req.body
-      const access_code = uuid.v4();
-      const event = new Event({
-        name:name,
-        description:description,
-        creator_id:creator_id,
-        access_code:access_code,
-        start_date:start_date,
-        end_date:end_date
-      })
-       await event.save()
-
-       const newMember = new EventMembers({
-        event_id:event._id,
-        access_code:access_code,
-
-        members:{
-          member_id:creator_id,
-          name:userSession.username
-        }})
-
-        await newMember.save()
-       res.status(200).json({message:event})
+      try{
+        const creator_id = userSession.user_id
+        const{name,description,start_date,end_date} = req.body
+  
+       
+        const access_code = uuid.v4();
+        const event = new Event({
+          name:name,
+          description:description,
+          creator_id:creator_id,
+          access_code:access_code,
+          start_date:start_date,
+          end_date:end_date
+        })
+       
+         await event.save()
+  
+         const newMember = new EventMembers({
+          event_id:event._id,
+          access_code:access_code,
+  
+          members:{
+            member_id:creator_id,
+            name:userSession.username
+          }})
+  
+          await newMember.save()
+         res.status(200).json({message:event})
+      }catch(error){
+        if (error) {
+          return res.status(400).json({ message:error.message });
+        }
+      }
+      
   })
 
   router.post("/joinEvent",async(req,res)=>{
