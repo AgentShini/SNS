@@ -1,5 +1,5 @@
 import SendMessage from "./SendMessage"
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import {socketIO} from "../App"
 import {DataContext} from "../Context"
 
@@ -57,8 +57,19 @@ export default function Messages(){
 
 
     return(
-        <div ref={messagesContainerRef} className="row-span-2 col-span-4 overflow-auto">
-     <div className="chat-grid">
+      <div ref={messagesContainerRef} className="row-span-2 col-span-4 overflow-auto">
+  {messagesReceived.length === 0 ? (
+    // Display placeholder image when messagesReceived is empty
+    <div className="flex justify-center items-center h-full">
+      <img
+        src="https://freesvg.org/img/1489440855.png"
+        alt="Placeholder Image"
+        className="w-60 h-60"
+      />
+    </div>
+  ) : (
+    // Render messages when messagesReceived is not empty
+    <div className="chat-grid">
       {messagesReceived.map((msg, i) => (
         <div
           className={`chat chat-start ${msg.sender_username === activeUser ? 'right' : 'left'}`}
@@ -66,7 +77,7 @@ export default function Messages(){
         >
           <div className="chat-image avatar">
             <div className="w-10 rounded-full">
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="avatar" />
+              <img src="https://freesvg.org/img/carita-ale-riendo.png" alt="avatar" />
             </div>
           </div>
           <div className="chat-content">
@@ -81,12 +92,17 @@ export default function Messages(){
           </div>
         </div>
       ))}
+      <SendMessage />
     </div>
+  )}
 
+</div>
 
-        <SendMessage/>
-
-        </div>
         
     )
 }
+
+
+
+
+

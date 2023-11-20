@@ -49,7 +49,7 @@ if (storedUserString) {
         setReceiver("")
         setRoom("")
         setReceiverID("")
-        navigate(`/login`)
+        navigate(`/`)
          alert("Goodbye")
     } else {
       
