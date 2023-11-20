@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios"
-import Cookies from 'js-cookie';
 const DataContext = createContext();
 const DataContextProvider = ({children}) =>{
     const [users,setUsers] = useState([])

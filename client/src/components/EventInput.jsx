@@ -7,31 +7,34 @@ import { DataContext } from '../Context';
 export default function EventInput(){
     const {FetchEvents} = useContext(DataContext)
     const [name, setName] = useState('');
-    const [start_date, setStartDate] = useState();
-    const [end_date, setEndDate] = useState('');
     const [description, setDescription] = useState('');
 
-  const handleDatePickerChange = (date) => {
-    setStartDate(formatDateToISOString(date));
-    console.log(start_date);
-  };
+    const handleDatePickerChange = (selectedDate) => {
+      const unformattedDate = selectedDate;
+      const formattedDate = formatDateToISOString(unformattedDate);
+  
+      // Log the formatted date
+      console.log('Formatted Start Date:', formattedDate);
+  
+      // Now you can use the formattedDate as needed
+    };
 
-  const handleDatePickerChangeEND = (date) => {
-    setEndDate(formatDateToISOString(date));
-    console.log(end_date);
-  };
 
     const navigate = useNavigate()
 
     function formatDateToISOString(inputDate) {
-        // Assuming inputDate is a string representation of the date
-        const dateObject = new Date(inputDate);
-        
-        // Convert to ISO string format
-        const isoString = dateObject.toISOString();
-      
-        return isoString;
-      }
+      // Assuming inputDate is a string representation of the date
+      const dateObject = new Date(inputDate);
+    
+      // Add one day to the date
+      dateObject.setDate(dateObject.getDate() + 1);
+    
+      // Convert to ISO string format
+      const isoString = dateObject.toISOString();
+    
+      return isoString;
+    }
+    
 
 
 
@@ -39,6 +42,8 @@ export default function EventInput(){
         e.preventDefault();
     
         try {
+          const end_date = document.getElementById('end_date').value;
+          const start_date = document.getElementById('start_date').value;
           const response = await fetch('http://localhost:5000/chat/createEvent', {
             method: 'POST',
             headers: {
@@ -75,8 +80,8 @@ return(
               <div className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               <Datepicker 
               title="Start Date"
+              id = "start_date"
               placeholder='Start Date'
-              value={start_date}
               onSelectedDateChanged={handleDatePickerChange}
               />
               </div>
@@ -85,9 +90,9 @@ return(
                 <div className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               <Datepicker 
               title="End Date"
+              id = "end_date"
               placeholder='End Date'
-              value={end_date}
-              onSelectedDateChanged={handleDatePickerChangeEND}
+              onSelectedDateChanged={handleDatePickerChange}
               />
               </div>
 

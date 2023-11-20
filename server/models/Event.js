@@ -13,13 +13,22 @@ start_date:{type:Date,required:true,  validate: {
     },
     message: 'Start date cannot be a past date.',
   },},
-end_date:{type:Date,required:true,  validate: {
+end_date:{type:Date,required:true, validate: [
+  {
     validator: function (value) {
-      // Check if the selected start date is not in the past
+      // Check if the selected end date is not in the past
       return value >= new Date();
     },
     message: 'End date cannot be a past date.',
-  },},
+  },
+  {
+    validator: function (value) {
+      // Check if the end date is not earlier than the start date
+      return this.start_date <= value;
+    },
+    message: 'End date cannot be earlier than the start date.',
+  },
+],},
 creation_date:{type:Date,default:Date.now()},
 access_code:{type:String,required:true}
 
