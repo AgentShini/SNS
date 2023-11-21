@@ -1,9 +1,49 @@
-import { useState,useContext } from "react";
+import {useContext, useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
+import {socketIO} from "../App"
+import axios from "axios"
 export default function EventsIn(){
-  const {events} = useContext(DataContext)
 
-  const [access_code, setAccessCode] = useState('');
+  const navigate = useNavigate();
+
+const { activeUser,eventRoom, setEventRoom, eventUsersMap, setEventUsersMap, events } = useContext(DataContext)
+
+const updateRoomID = async (access_code)=>{
+  
+  setEventRoom(access_code)
+  socketIO.emit('join_event', { activeUser, eventRoom });
+}
+
+const addUsersToEvent = async (eventRoom, activeUser) => {
+  updateRoomID(eventRoom);
+
+  try {
+    // Check if the activeUser is already in the specified groupRoom
+    if (!(eventUsersMap[eventRoom] || []).includes(activeUser)) {
+      setEventUsersMap((prevMap) => {
+        // Create a new object with the existing mapping
+        const newMap = { ...prevMap };
+
+        // Add or update the array of users for the specified group
+        newMap[eventRoom] = [...(newMap[eventRoom] || []), activeUser];
+        return newMap;
+      });
+    } else {
+      console.log(`${activeUser} already exists in event ${eventRoom}`);
+    }
+
+    const response = await axios.get(`http://localhost:5000/chat/event_member?access_code=${encodeURIComponent(eventRoom)}&username=${encodeURIComponent(activeUser)}`);
+    if (response.status == 200) {
+      navigate(`/EventChat`);
+    }
+    if(response.status === 201){
+      alert("Not a member")
+    }
+  } catch (error) {
+    alert(error.data);
+  }
+}
 
 
  
@@ -21,6 +61,9 @@ export default function EventsIn(){
     return rawDate.toLocaleDateString('en-US', options);
   }
 
+  useEffect(()=>{
+    console.log("Members are",eventUsersMap)
+    },[eventUsersMap])
 
 
 
@@ -28,7 +71,6 @@ export default function EventsIn(){
   const handleSubmit = async (e) => {
     const updatedAccessCode = e.target.value;
 
-    setAccessCode(updatedAccessCode);
 
     try {
       const response = await fetch('http://localhost:5000/chat/joinEvent', {
@@ -63,7 +105,6 @@ export default function EventsIn(){
             <th>Date Created</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Members</th>
 
             <th></th>
           </tr>
@@ -91,11 +132,14 @@ export default function EventsIn(){
             <div className="font-bold">{formatDate(events.end_date)}</div>
             </th>
 
-            <th>
+            {/* <th>
             <div className="font-bold">{events.access_code}</div>
-            </th>
+            </th> */}
             <th>
               <button onClick={handleSubmit} value = {events.access_code} className="btn btn-ghost btn-xs">Join Event </button>
+            </th>
+            <th>
+            <button value = {events.access_code}   onClick={() => addUsersToEvent(events.access_code, activeUser)}  className="btn btn-ghost btn-xs">Chat Event</button>
             </th>
           </tr>
             ))}

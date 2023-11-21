@@ -72,6 +72,20 @@ io.on('connection', (socket) => {
   });
 
 
+  socket.on('join_event', (data) => {
+    const { username, room } = data; // Data sent from client when join_room event emitted
+    socket.join(room); // Join the user to a socket room
+    //console.log("User started a chat")
+   // console.log("Data is",data)
+
+    chatRoom = room;
+    allUsers.push({ id: socket.id, username, room });
+    chatRoomUsers = allUsers.filter((user) => user.room === room);
+    socket.to(room).emit('eventchatroom_users', chatRoomUsers);
+    socket.emit('eventchatroom_users', chatRoomUsers);
+  });
+
+
 
   socket.on('send_message', (data) => {
     const { message, username, room, __createdtime__ } = data;

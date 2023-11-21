@@ -110,7 +110,6 @@ console.log("Members are",groupUsersMap)
           <tr>
             <th>Group Name</th>
             <th>Date Created</th>
-            <th>Access Code</th>
             <th></th>
           </tr>
         </thead>
@@ -129,9 +128,9 @@ console.log("Members are",groupUsersMap)
               {formatDate(groups.creation_date)}
               <br/>
             </td>
-            <th>
+            {/* <th>
             <div className="font-bold">{groups.access_code}</div>
-            </th>
+            </th> */}
             <th>
               <button onClick={handleSubmit} value = {groups.access_code} className="btn btn-ghost btn-xs">Join Group</button>
             </th>

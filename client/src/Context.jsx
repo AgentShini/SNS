@@ -18,6 +18,13 @@ const DataContextProvider = ({children}) =>{
     const [groupRoom, setGroupRoom] = useState('')
     const [groupUsersMap, setGroupUsersMap] = useState({});
     const [groupmessagesReceived, setGroupMessagesReceived] = useState([]);
+    const [eventRoom, setEventRoom] = useState('')
+    const [eventUsersMap, setEventUsersMap] = useState({});
+    const [eventmessagesReceived, setEventMessagesReceived] = useState([]);
+
+
+    
+
 
    
 
@@ -171,6 +178,26 @@ console.log(error.response)
   } 
 
 
+  const FetchEventMessages = async()=>{
+    if (eventRoom !== ""){
+    try {
+      const roomID = eventRoom
+      await axios.get(`http://localhost:5000/chat/event_messages?roomID=${encodeURIComponent(roomID)}`)
+      .then((response) => {
+        setEventMessagesReceived(response.data)
+
+      })
+      .catch((error) => {
+        console.error('Error fetching messages:', error);
+      });
+  } catch (error) {
+      console.log(error.response)
+      
+  }
+  }
+  } 
+
+
   useEffect(() => {
     const storedUserString = localStorage.getItem('userSession');
 
@@ -195,6 +222,11 @@ console.log(error.response)
     FetchGroupMessages();
   }, [groupRoom]);
 
+  useEffect(() => {
+    FetchEventMessages();
+  }, [eventRoom]);
+
+
 
 
 
@@ -206,6 +238,8 @@ console.log(error.response)
 
    console.log("ROom is",room)
    console.log("Messages are",groupmessagesReceived)
+   console.log("Messages are",eventmessagesReceived)
+
 
 
     return(
@@ -215,7 +249,10 @@ console.log(error.response)
              SetSearchResult, SetUsername, SetUsernameState, activeUserState, activeUser, setRoom, room,
               socket, setSocket,receiver, setReceiver,messagesReceived, setMessagesReceived
               ,receiverID, setReceiverID, FetchRoomMessages,groupRoom, setGroupRoom,
-               groupUsersMap, setGroupUsersMap,groupmessagesReceived, setGroupMessagesReceived, FetchGroupMessages
+               groupUsersMap, setGroupUsersMap,groupmessagesReceived, 
+               setGroupMessagesReceived, FetchGroupMessages,eventRoom, setEventRoom,
+               eventUsersMap, setEventUsersMap,
+               eventmessagesReceived, setEventMessagesReceived, FetchEventMessages
 
             }}>
             {children}
