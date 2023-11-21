@@ -1,18 +1,18 @@
-import SendMessage from "./SendMessage"
+import SendGroupMessage from "./SendGroupMessages"
 import { useEffect, useRef, useContext } from 'react';
 import {socketIO} from "../App"
 import {DataContext} from "../Context"
 
 
-export default function Messages(){
-   const {messagesReceived, setMessagesReceived, activeUser} = useContext(DataContext)
+export default function GroupMessages(){
+   const {groupmessagesReceived, setGroupMessagesReceived, activeUser} = useContext(DataContext)
 
    const messagesContainerRef = useRef(null);
 
    useEffect(() => {
     // Scroll to the bottom when messages change
     scrollToBottom();
-  }, [messagesReceived]);
+  }, [groupmessagesReceived]);
 
   useEffect(() => {
     // Scroll to the bottom when the component mounts
@@ -30,7 +30,7 @@ export default function Messages(){
  useEffect(() => {
   socketIO.on('receive_message', (data) => {
     console.log(data);
-    setMessagesReceived((state) => [
+    setGroupMessagesReceived((state) => [
       ...state,
       {
         message: data.message,
@@ -53,31 +53,29 @@ export default function Messages(){
     const date = new Date(timestamp);
     return date.toLocaleString();
   }
- console.log("CHatss",messagesReceived)
+ console.log("CHatss",groupmessagesReceived)
 
 
     return(
       <div ref={messagesContainerRef} className="row-span-2 col-span-4 overflow-auto">
-  {messagesReceived.length === 0 ? (
-    // Display placeholder image when messagesReceived is empty
-    <div> <div className="flex justify-center items-center h-full">
-      <img
-        src="https://freesvg.org/img/1489440855.png"
-        alt="Placeholder Image"
-        className="w-60 h-60"
-      />
-                 
+  {groupmessagesReceived.length === 0 ? (
+     // Display placeholder image when messagesReceived is empty
+     <div> <div className="flex justify-center items-center h-full">
+     <img
+       src="https://freesvg.org/img/1489440855.png"
+       alt="Placeholder Image"
+       className="w-60 h-60"
+     />
+                
 
-    </div>
-    <SendMessage/>
-    
-    </div>
-    
-    
+   </div>
+   <SendGroupMessage/>
+   
+   </div>
   ) : (
     // Render messages when messagesReceived is not empty
     <div className="chat-grid">
-      {messagesReceived.map((msg, i) => (
+      {groupmessagesReceived.map((msg, i) => (
         <div
           className={`chat chat-start ${msg.sender_username === activeUser ? 'right' : 'left'}`}
           key={i}
@@ -99,7 +97,7 @@ export default function Messages(){
           </div>
         </div>
       ))}
-      <SendMessage />
+      <SendGroupMessage />
     </div>
   )}
 

@@ -1,10 +1,56 @@
-import { useState,useContext } from "react";
+import {useContext, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
+import {socketIO} from "../App"
+import axios from "axios"
+
 
 export default function GroupsIn(){
-const {groups} = useContext(DataContext)
+const navigate = useNavigate();
 
-  const [access_code, setAccessCode] = useState('');
+
+const { activeUser,groupRoom, setGroupRoom, groupUsersMap, setGroupUsersMap, groups } = useContext(DataContext)
+
+const updateRoomID = async (access_code)=>{
+  
+  setGroupRoom(access_code)
+  socketIO.emit('join_group', { activeUser, groupRoom });
+}
+const addUsersToGroup = async (groupRoom, activeUser) => {
+  updateRoomID(groupRoom);
+
+  try {
+    // Check if the activeUser is already in the specified groupRoom
+    if (!(groupUsersMap[groupRoom] || []).includes(activeUser)) {
+      setGroupUsersMap((prevMap) => {
+        // Create a new object with the existing mapping
+        const newMap = { ...prevMap };
+
+        // Add or update the array of users for the specified group
+        newMap[groupRoom] = [...(newMap[groupRoom] || []), activeUser];
+        return newMap;
+      });
+    } else {
+      console.log(`${activeUser} already exists in group ${groupRoom}`);
+    }
+
+    const response = await axios.get(`http://localhost:5000/chat/group_member?access_code=${encodeURIComponent(groupRoom)}&username=${encodeURIComponent(activeUser)}`);
+    if (response.status == 200) {
+      navigate(`/GroupChat`);
+    }
+    if(response.status === 201){
+      alert("Not a member")
+    }
+  } catch (error) {
+    alert(error.data);
+  }
+}
+
+
+
+
+
+
 
   function formatDate(dateString) {
     const rawDate = new Date(dateString);
@@ -21,14 +67,15 @@ const {groups} = useContext(DataContext)
   }
 
 
-
+useEffect(()=>{
+console.log("Members are",groupUsersMap)
+},[groupUsersMap])
 
 
 
 
   const handleSubmit = async (e) => {
     const updatedAccessCode = e.target.value;
-    setAccessCode(updatedAccessCode);
     try {
       const response = await fetch('http://localhost:5000/chat/joinGroup', {
         method: 'POST',
@@ -40,6 +87,7 @@ const {groups} = useContext(DataContext)
       });
 
       if (response.status === 200) {
+        addUsersToGroup(updatedAccessCode,activeUser)
         alert("SUCCESS")
     } else {
       
@@ -51,6 +99,7 @@ const {groups} = useContext(DataContext)
       console.error('Group Joining Error:', error.message);
     }
   };
+
 
 
     return(
@@ -85,6 +134,9 @@ const {groups} = useContext(DataContext)
             </th>
             <th>
               <button onClick={handleSubmit} value = {groups.access_code} className="btn btn-ghost btn-xs">Join Group</button>
+            </th>
+            <th>
+              <button value = {groups.access_code}   onClick={() => addUsersToGroup(groups.access_code, activeUser)}  className="btn btn-ghost btn-xs">Chat Group</button>
             </th>
           </tr>
             ))}

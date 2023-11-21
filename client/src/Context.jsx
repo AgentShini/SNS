@@ -15,6 +15,11 @@ const DataContextProvider = ({children}) =>{
     const [receiver, setReceiver] = useState("");
     const [messagesReceived, setMessagesReceived] = useState([]);
     const [receiverID, setReceiverID] = useState("")
+    const [groupRoom, setGroupRoom] = useState('')
+    const [groupUsersMap, setGroupUsersMap] = useState({});
+    const [groupmessagesReceived, setGroupMessagesReceived] = useState([]);
+
+   
 
 
 
@@ -144,6 +149,28 @@ console.log(error.response)
   }
   }   
 
+
+
+  const FetchGroupMessages = async()=>{
+    if (groupRoom !== ""){
+    try {
+      const roomID = groupRoom
+      await axios.get(`http://localhost:5000/chat/group_messages?roomID=${encodeURIComponent(roomID)}`)
+      .then((response) => {
+        setGroupMessagesReceived(response.data)
+
+      })
+      .catch((error) => {
+        console.error('Error fetching messages:', error);
+      });
+  } catch (error) {
+      console.log(error.response)
+      
+  }
+  }
+  } 
+
+
   useEffect(() => {
     const storedUserString = localStorage.getItem('userSession');
 
@@ -164,6 +191,10 @@ console.log(error.response)
     FetchRoomMessages();
   }, [room]);
 
+  useEffect(() => {
+    FetchGroupMessages();
+  }, [groupRoom]);
+
 
 
 
@@ -174,7 +205,7 @@ console.log(error.response)
          },[]);
 
    console.log("ROom is",room)
-   console.log("Messages are",messagesReceived)
+   console.log("Messages are",groupmessagesReceived)
 
 
     return(
@@ -183,7 +214,8 @@ console.log(error.response)
             toggleDropdown,FetchUsers,Refresh,groups,events, FetchGroups, FetchEvents,
              SetSearchResult, SetUsername, SetUsernameState, activeUserState, activeUser, setRoom, room,
               socket, setSocket,receiver, setReceiver,messagesReceived, setMessagesReceived
-              ,receiverID, setReceiverID, FetchRoomMessages
+              ,receiverID, setReceiverID, FetchRoomMessages,groupRoom, setGroupRoom,
+               groupUsersMap, setGroupUsersMap,groupmessagesReceived, setGroupMessagesReceived, FetchGroupMessages
 
             }}>
             {children}

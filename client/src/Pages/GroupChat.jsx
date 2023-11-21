@@ -1,6 +1,6 @@
 import SideNav from "../components/SideNav"
 import UserAvatar from "../components/UserAvatar"
-import Messages from "../components/Messages"
+import GroupMessages from "../components/GroupMessages"
 export default function GroupChat(){
     return(
         <div style={{ height: '100vh' }} className="grid grid-rows-3 grid-flow-col gap-3">
@@ -9,7 +9,7 @@ export default function GroupChat(){
 
             </div>
             <UserAvatar/>
-            <Messages/>
+            <GroupMessages/>
             
         </div>
     )
