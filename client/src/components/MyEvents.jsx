@@ -1,13 +1,13 @@
-import {useContext, useEffect, useState } from "react";
+import {useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
 import axios from "axios"
-export default function EventsIn(){
+export default function MyEvents(){
 
   const navigate = useNavigate();
 
-const { activeUser,eventRoom, setEventRoom, eventUsersMap, setEventUsersMap, events } = useContext(DataContext)
+const { activeUser,eventRoom, setEventRoom, eventUsersMap, setEventUsersMap, myEvents } = useContext(DataContext)
 
 const updateRoomID = async (access_code)=>{
   
@@ -17,6 +17,8 @@ const updateRoomID = async (access_code)=>{
 
 const addUsersToEvent = async (eventRoom, activeUser) => {
   updateRoomID(eventRoom);
+
+  console.log(myEvents)
 
   try {
     // Check if the activeUser is already in the specified groupRoom
@@ -61,43 +63,15 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
     return rawDate.toLocaleDateString('en-US', options);
   }
 
-  useEffect(()=>{
-    console.log("Members are",eventUsersMap)
-    },[eventUsersMap])
 
 
 
 
-  const handleSubmit = async (e) => {
-    const updatedAccessCode = e.target.value;
-
-
-    try {
-      const response = await fetch('http://localhost:5000/chat/joinEvent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ access_code:updatedAccessCode }),
-        credentials: 'include',
-      });
-
-      if (response.status === 200) {
-        alert("SUCCESS")
-    } else {
-      
-        const errorData = await response.json();
-        alert(errorData.message)
-        console.error('Event Joining Error:', errorData.message);
-      }
-    } catch (error) {
-      console.error('Event Joining Error:', error.message);
-    }
-  };
+ 
 
     return(
       <div style={{overflow:"scroll"}}>
-        {events.length !== 0 ?(
+         {myEvents.length !== 0 ?(
       <table className="table">
         {/* head */}
         <thead>
@@ -111,7 +85,7 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
           </tr>
         </thead>
         <tbody>
-         { events.map((events,index)=>(
+         { myEvents.map((events,index)=>(
           <tr key={index}>
           <td>
               <div className="flex items-center space-x-3">
@@ -132,13 +106,6 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
             <th>
             <div className="font-bold">{formatDate(events.end_date)}</div>
             </th>
-
-            {/* <th>
-            <div className="font-bold">{events.access_code}</div>
-            </th> */}
-            <th>
-              <button onClick={handleSubmit} value = {events.access_code} className="btn btn-ghost btn-xs">Join Event </button>
-            </th>
             <th>
             <button value = {events.access_code}   onClick={() => addUsersToEvent(events.access_code, activeUser)}  className="btn btn-ghost btn-xs">Chat Event</button>
             </th>
@@ -148,16 +115,16 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
       
         
       </table>
-):(
-  <div className="flex justify-center items-center h-full">
-  <img
-    src="https://freesvg.org/img/1489440855.png"
-    alt="Placeholder Image"
-    className="w-60 h-60"
-  />
-          
-</div>
-)}
+      ):(
+        <div className="flex justify-center items-center h-full">
+         <img
+           src="https://freesvg.org/img/1489440855.png"
+           alt="Placeholder Image"
+           className="w-60 h-60"
+         />
+                 
+       </div>
+       )}
     </div>
     )
 

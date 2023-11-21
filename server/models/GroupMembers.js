@@ -8,6 +8,8 @@ const GroupMembersSchema = new Schema({
 
 group_id:{type:mongoose.Schema.Types.ObjectId,ref:Groups,required:true},
 access_code:{type:String},
+name:{type:String},
+creator_name:{type:String},
 members:[Users]
 })
 const GroupMembers = mongoose.model("GroupMembers",GroupMembersSchema)

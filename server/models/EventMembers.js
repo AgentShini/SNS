@@ -7,6 +7,11 @@ const EventMembersSchema = new Schema({
 
 event_id:{type:mongoose.Schema.Types.ObjectId,ref:Event,required:true},
 access_code:{type:String},
+name:{type:String},
+creator_name:{type:String},
+creation_date:{type:Date},
+start_date:{type:Date},
+end_date:{type:Date},
 members:[Users]
 })
 

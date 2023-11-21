@@ -34,6 +34,7 @@ router.post("/createEvent",async(req,res)=>{
       }
       try{
         const creator_id = userSession.user_id
+        const creator_name = userSession.username
         const{name,description,start_date,end_date} = req.body
   
        
@@ -42,6 +43,7 @@ router.post("/createEvent",async(req,res)=>{
           name:name,
           description:description,
           creator_id:creator_id,
+          creator_name:creator_name,
           access_code:access_code,
           start_date:start_date,
           end_date:end_date
@@ -52,6 +54,11 @@ router.post("/createEvent",async(req,res)=>{
          const newMember = new EventMembers({
           event_id:event._id,
           access_code:access_code,
+          creator_name:creator_name,
+          creation_date:Date.now(),
+          start_date:start_date,
+          end_date:end_date,
+          name:name,
   
           members:{
             member_id:creator_id,
@@ -130,6 +137,7 @@ const filter = {
 const update = {
   $push: {
     members: newMember,
+    name:event_id.name,
   },
 };      
     const result = await EventMembers.updateOne(filter, update);
@@ -234,6 +242,25 @@ return  res.status(200).json({member:result})
 
 
   })
+
+
+
+  router.get("/EventsIn",async(req,res)=>{    
+    const {username} = req.query
+      const events = await EventMembers.find({'members':{
+        $elemMatch:{
+          'name':username
+        }
+      }})
+  if(events.length == 0){
+    return res.status(401).json({message:"No events"})
+  }
+  return res.send(events);
+
+
+  })
+
+
 
 
   router.delete("/deleteEvent",async(req,res)=>{

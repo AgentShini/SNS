@@ -21,17 +21,8 @@ const DataContextProvider = ({children}) =>{
     const [eventRoom, setEventRoom] = useState('')
     const [eventUsersMap, setEventUsersMap] = useState({});
     const [eventmessagesReceived, setEventMessagesReceived] = useState([]);
-
-
-    
-
-
-   
-
-
-
-
-    
+    const [myEvents,setMyEvents] = useState([])
+    const [myGroups, setMyGroups] = useState([])
 
 
   
@@ -64,6 +55,48 @@ const DataContextProvider = ({children}) =>{
         
     }
 }
+      }
+
+
+      const FetchMyGroups = async()=>{
+        const storedUserString = localStorage.getItem('userSession');
+
+        if (storedUserString) {
+          const storedUserObject = JSON.parse(storedUserString);
+     
+          try{
+            await axios.get(`http://localhost:5000/chat/GroupsIn?username=${encodeURIComponent(storedUserObject.username)}`)
+            .then((response)=>{
+              setMyGroups(response.data)
+            })
+            .catch((error)=>{
+              console.error('Error fetching my groups:', error);
+            })
+          }catch(error){
+            console.log(error.response)
+          }
+          }
+        
+      }
+
+      const FetchMyEvents = async()=>{
+        const storedUserString = localStorage.getItem('userSession');
+
+        if (storedUserString) {
+          const storedUserObject = JSON.parse(storedUserString);
+          try{
+            await axios.get(`http://localhost:5000/chat/EventsIn?username=${encodeURIComponent(storedUserObject.username)}`)
+            .then((response)=>{
+              setMyEvents(response.data)
+            })
+            .catch((error)=>{
+              console.error('Error fetching my events:', error);
+            })
+          }catch(error){
+            console.log(error.response)
+          }
+        }
+        
       }
 
 
@@ -234,7 +267,21 @@ console.log(error.response)
         FetchAllUsers();
         FetchGroups();
         FetchEvents();
+        FetchMyGroups();
+        FetchMyEvents();
          },[]);
+
+        
+         useEffect(()=>{
+          console.log("My GROUPS ARE",myGroups)
+         },[myGroups])
+
+         useEffect(()=>{
+          console.log("My Events ARE",myEvents)
+         },[myEvents])
+
+
+
 
    console.log("ROom is",room)
    console.log("Messages are",groupmessagesReceived)
@@ -252,7 +299,9 @@ console.log(error.response)
                groupUsersMap, setGroupUsersMap,groupmessagesReceived, 
                setGroupMessagesReceived, FetchGroupMessages,eventRoom, setEventRoom,
                eventUsersMap, setEventUsersMap,
-               eventmessagesReceived, setEventMessagesReceived, FetchEventMessages
+               eventmessagesReceived, setEventMessagesReceived, FetchEventMessages,
+               myGroups, setMyGroups,myEvents,setMyEvents,FetchMyEvents, FetchMyGroups
+
 
             }}>
             {children}

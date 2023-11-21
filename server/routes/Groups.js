@@ -33,12 +33,14 @@ router.post("/createGroup",async(req,res)=>{
           return
       }
       const creator_id = userSession.user_id
+      const creator_name = userSession.username
       const{name,description} = req.body
       const access_code = uuid.v4();
       const group = new Group({
         name:name,
         description:description,
         creator_id:creator_id,
+        creator_name:creator_name,
         access_code:access_code
       })
        await group.save()
@@ -46,6 +48,8 @@ router.post("/createGroup",async(req,res)=>{
        const newMember = new GroupMembers({
         group_id:group._id,
         access_code:access_code,
+        creator_name:creator_name,
+        name:name,
 
         members:{
           member_id:creator_id,
@@ -112,7 +116,7 @@ const filter = {
 const update = {
   $push: {
     members: newMember,
-  },
+  }
 };      
     const result = await GroupMembers.updateOne(filter, update);
     return  res.status(200).json({message:"Joined Group"})
@@ -213,6 +217,22 @@ return  res.status(200).json({message:"Exited Group"})
     return res.status(401).json({message:"No groups"})
   }
   return res.status(401).json({message:groups})
+
+
+  })
+
+  router.get("/GroupsIn",async(req,res)=>{
+  
+      const {username} = req.query
+      const groups = await GroupMembers.find({'members':{
+        $elemMatch:{
+          'name':username
+        }
+      }})
+  if(groups.length == 0){
+    return res.status(401).json({message:"No groups"})
+  }
+  return res.send(groups);
 
 
   })

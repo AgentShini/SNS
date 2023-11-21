@@ -14,6 +14,8 @@ import AllEvents from './Pages/AllEvents'
 import Chat from "./Pages/Chat"
 import EventChat from "./Pages/EventChat"
 import GroupChat from './Pages/GroupChat'
+import MyEventPage from './Pages/MyEventPage'
+import MyGroupPage from './Pages/MyGroupPage'
 
 const socketIO = io.connect('http://localhost:5000')
 
@@ -28,6 +30,10 @@ function App() {
     <Router>
     <Routes>
     <Route path='/inactivechat' element = {<InactiveChat/>}/>
+    <Route path='/MyGroups' element = {<MyGroupPage/>}/>
+    <Route path='/MyEvents' element = {<MyEventPage/>}/>
+
+
     <Route path='/Chat' element = {<Chat/>}/>
     <Route path='/EventChat' element = {<EventChat/>}/>
     <Route path='/GroupChat' element = {<GroupChat/>}/>

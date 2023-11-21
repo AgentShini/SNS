@@ -5,7 +5,7 @@ import { DataContext } from '../Context';
 
   
 export default function EventInput(){
-    const {FetchEvents} = useContext(DataContext)
+    const {FetchEvents,FetchMyEvents} = useContext(DataContext)
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
 
@@ -55,6 +55,7 @@ export default function EventInput(){
     
           if (response.status === 200) {
             FetchEvents()
+            FetchMyEvents()
             alert("SUCCESS")
             navigate(`/Events/Events`)
         } else {

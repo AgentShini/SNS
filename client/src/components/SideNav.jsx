@@ -21,7 +21,7 @@ const SideNav = () => {
   const { pathname } = useLocation();
 
 
-  const {activeUserState,SetUsername,SetUsernameState, setReceiver, setReceiverID, setRoom} = useContext(DataContext)
+  const {activeUserState,SetUsername,SetUsernameState, setReceiver, myGroups, myEvents, setReceiverID, setRoom} = useContext(DataContext)
 
   const navigate = useNavigate()
 
@@ -113,10 +113,26 @@ if (storedUserString) {
       icon: HiUserGroup,
       menus: ["createGroup", "Groups"],
     },
+   
     {
       name: "Events",
       icon: HiSpeakerphone,
       menus: ["createEvent", "Events"],
+    },
+   
+  ];
+
+
+  const myMenusList = [
+  
+    {
+      name: "MyGroups",
+      icon: HiUserGroup,
+    },
+  
+      {
+      name: "MyEvents",
+      icon: HiSpeakerphone,
     },
   ];
 
@@ -124,12 +140,10 @@ if (storedUserString) {
     {
       name: "Groups",
       icon: HiUserGroup,
-      menus: ["Groups"],
     },
     {
       name: "Events",
       icon: HiSpeakerphone,
-      menus: ["Events"],
     },
   ];
 
@@ -150,7 +164,7 @@ if (storedUserString) {
             overflow-hidden md:relative fixed
          h-screen "
       >
-        <div className="flex items-center gap-2.5 font-medium border-b py-3 border-slate-300  mx-3">
+        <div className="flex items-center gap-2.5">
           <img
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
             width={45}
@@ -178,6 +192,26 @@ if (storedUserString) {
                 {subMenusList?.map((menu) => (
                   <div key={menu.name} className="flex flex-col gap-1">
                     <SubMenu data={menu} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+
+{(open || isTabletMid) && (
+              <div >
+                <small className="pl-3 text-slate-500 inline-block mb-2">
+                  My Community
+                </small>
+                {myMenusList?.map((menu) => (
+                  <div key={menu.name} className="flex flex-col gap-1">
+        <li>
+        <Link to={`/${menu.name}`} className="link">
+              <HiUser size={23} className="min-w-max" />
+              {menu.name}
+              </Link>
+            </li>
+
                   </div>
                 ))}
               </div>
@@ -227,6 +261,8 @@ if (storedUserString) {
                 ))}
               </div>
             )}
+
+          
               <li>
            
             </li>

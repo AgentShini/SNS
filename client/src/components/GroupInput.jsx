@@ -6,7 +6,7 @@ import { DataContext } from '../Context';
 
 
 export default function GroupInput(){
-    const {FetchGroups} = useContext(DataContext)
+    const {FetchGroups,FetchMyGroups} = useContext(DataContext)
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const navigate = useNavigate()
@@ -26,6 +26,7 @@ export default function GroupInput(){
     
           if (response.status === 200) {
             FetchGroups()
+            FetchMyGroups()
             alert("SUCCESS")
             navigate(`/Groups/Groups`)
         } else {
