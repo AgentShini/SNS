@@ -137,7 +137,6 @@ const filter = {
 const update = {
   $push: {
     members: newMember,
-    name:event_id.name,
   },
 };      
     const result = await EventMembers.updateOne(filter, update);

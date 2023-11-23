@@ -28,7 +28,7 @@ export default function GroupInput(){
             FetchGroups()
             FetchMyGroups()
             alert("SUCCESS")
-            navigate(`/Groups/Groups`)
+            navigate(`/Groups`)
         } else {
           
             const errorData = await response.json();

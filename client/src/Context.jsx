@@ -23,6 +23,8 @@ const DataContextProvider = ({children}) =>{
     const [eventmessagesReceived, setEventMessagesReceived] = useState([]);
     const [myEvents,setMyEvents] = useState([])
     const [myGroups, setMyGroups] = useState([])
+    const [UsersFriendsMap, setUsersFriendsMap] = useState({});
+
 
 
   
@@ -60,6 +62,7 @@ const DataContextProvider = ({children}) =>{
 
       const FetchMyGroups = async()=>{
         const storedUserString = localStorage.getItem('userSession');
+        console.l
 
         if (storedUserString) {
           const storedUserObject = JSON.parse(storedUserString);
@@ -263,13 +266,17 @@ console.log(error.response)
 
 
 
+
+ 
+
       useEffect(() => {
         FetchAllUsers();
         FetchGroups();
         FetchEvents();
-        FetchMyGroups();
-        FetchMyEvents();
          },[]);
+
+      
+
 
         
          useEffect(()=>{
@@ -300,9 +307,8 @@ console.log(error.response)
                setGroupMessagesReceived, FetchGroupMessages,eventRoom, setEventRoom,
                eventUsersMap, setEventUsersMap,
                eventmessagesReceived, setEventMessagesReceived, FetchEventMessages,
-               myGroups, setMyGroups,myEvents,setMyEvents,FetchMyEvents, FetchMyGroups
-
-
+               myGroups, setMyGroups,myEvents,setMyEvents,
+               FetchMyEvents, FetchMyGroups,UsersFriendsMap, setUsersFriendsMap
             }}>
             {children}
         </DataContext.Provider>

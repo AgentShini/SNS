@@ -7,7 +7,7 @@ export default function MyEvents(){
 
   const navigate = useNavigate();
 
-const { activeUser,eventRoom, setEventRoom, eventUsersMap, setEventUsersMap, myEvents } = useContext(DataContext)
+const { activeUser,eventRoom, setEventRoom, eventUsersMap, setEventUsersMap } = useContext(DataContext)
 
 const updateRoomID = async (access_code)=>{
   
@@ -17,8 +17,8 @@ const updateRoomID = async (access_code)=>{
 
 const addUsersToEvent = async (eventRoom, activeUser) => {
   updateRoomID(eventRoom);
+ 
 
-  console.log(myEvents)
 
   try {
     // Check if the activeUser is already in the specified groupRoom

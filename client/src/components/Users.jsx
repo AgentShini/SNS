@@ -1,5 +1,5 @@
 
-import  { useContext } from 'react';
+import  { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
@@ -7,10 +7,35 @@ export default function Users(){
   const {
     activeDropdowns,
    SearchData, SearchResult, FetchUsers, toggleDropdown, setRoom, activeUser, room, setReceiver,
-    setReceiverID, receiver
+    setReceiverID, receiver,UsersFriendsMap, setUsersFriendsMap
    } = useContext(DataContext)
 
-   const navigate = useNavigate();
+
+
+
+   const addUsersToFriendList = async (room, activeUser) => {
+    
+
+  
+    try {
+      // Check if the activeUser is already in the specified groupRoom
+      if (!(UsersFriendsMap[activeUser] || []).includes(room)) {
+        setUsersFriendsMap((prevMap) => {
+          // Create a new object with the existing mapping
+          const newMap = { ...prevMap };
+  
+          // Add or update the array of users for the specified group
+          newMap[activeUser] = [...(newMap[activeUser] || []), room];
+          return newMap;
+        });
+      } else {
+        console.log(`already Friend for user ${activeUser}`);
+      }
+    } catch (error) {
+      alert(error.data);
+    }
+  }
+  
 
    
 
@@ -49,6 +74,10 @@ export default function Users(){
    return sortedUserIDs.join('-');
  };
 
+ useEffect(()=>{
+console.log("FriendList",UsersFriendsMap)
+ },[UsersFriendsMap])
+
 
 
    
@@ -80,7 +109,6 @@ export default function Users(){
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                    
                         <tr>
-                            <th scope="col" className="px-4 py-3">EMAIL</th>
                             <th scope="col" className="px-4 py-3">USERNAME</th>
                             <th scope="col" className="px-4 py-3">DATE JOINED</th>
                             <th scope="col" className="px-4 py-3">
@@ -91,9 +119,7 @@ export default function Users(){
                     <tbody>
                     {SearchResult.map((user, index) => (
           <tr key={index} className="border-b dark:border-gray-700">
-            <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              {user.email}
-            </th>
+           
             <td className="px-4 py-3">{user.username}</td>
             <td className="px-4 py-3">{formatDate(user.date_joined)}</td>
             <td className="px-4 py-3 flex items-center justify-end">
@@ -102,13 +128,9 @@ export default function Users(){
                 className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                 type="button"
               >
-                <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                </svg>
               </button>
               <div
-                className={`z-10 w-22 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 ${
-                  activeDropdowns[index] ? '' : 'hidden'
+                className={`z-10 w-22 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600
                 }`}
               >
                  <button onClick={() => {
@@ -118,10 +140,11 @@ export default function Users(){
     setReceiverID(user._id),
     setRoom(generateCommonRoomID(activeUser,user.username))
   ])
-  navigate(`/Chat`)
+  const room = generateCommonRoomID(activeUser, user.username);
+  addUsersToFriendList(room,activeUser)
     }}
 id = {user._id} className=" text-md text-gray-700 dark:text-gray-200 block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                     Message
+                     Add Friend
                     </button>
             
               </div>

@@ -156,7 +156,6 @@ const update = {
       }
 
       const {group_id} = req.body
-      const user = userSession.user_id
       const joined = await GroupMembers.findOne({group_id:group_id,'members':{
         $elemMatch:{
           'name':userSession.username

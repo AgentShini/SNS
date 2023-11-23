@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 import SubMenu from "../components/Submenu";
+import MyMenu from "../components/MyMenu"
 import { motion } from "framer-motion";
 
 
@@ -21,9 +22,13 @@ const SideNav = () => {
   const { pathname } = useLocation();
 
 
-  const {activeUserState,SetUsername,SetUsernameState, setReceiver, myGroups, myEvents, setReceiverID, setRoom} = useContext(DataContext)
+  const {activeUserState,SetUsername,SetUsernameState, setReceiver, 
+    myGroups, myEvents, setReceiverID,activeUser,
+     setRoom, UsersFriendsMap} = useContext(DataContext)
 
   const navigate = useNavigate()
+
+  const retrievedArray = UsersFriendsMap[activeUser] || [];
 
 
   const handleSubmit = async (e) => {
@@ -61,6 +66,8 @@ if (storedUserString) {
       console.error('Error:', error.message);
     }
   };
+
+  
 
   useEffect(() => {
     if (isTabletMid) {
@@ -126,13 +133,9 @@ if (storedUserString) {
   const myMenusList = [
   
     {
-      name: "MyGroups",
+      name: "Friends",
       icon: HiUserGroup,
-    },
-  
-      {
-      name: "MyEvents",
-      icon: HiSpeakerphone,
+      menus:retrievedArray
     },
   ];
 
@@ -179,7 +182,7 @@ if (storedUserString) {
             <li>
               <Link to={"/"} className="link">
               <HiUser size={23} className="min-w-max" />
-              Friends
+              Users
               </Link>
             </li>
         
@@ -199,18 +202,13 @@ if (storedUserString) {
 
 
 {(open || isTabletMid) && (
-              <div >
+              <div>
                 <small className="pl-3 text-slate-500 inline-block mb-2">
                   My Community
                 </small>
                 {myMenusList?.map((menu) => (
                   <div key={menu.name} className="flex flex-col gap-1">
-        <li>
-        <Link to={`/${menu.name}`} className="link">
-              <HiUser size={23} className="min-w-max" />
-              {menu.name}
-              </Link>
-            </li>
+              <MyMenu data= {menu}/>
 
                   </div>
                 ))}
@@ -256,7 +254,9 @@ if (storedUserString) {
                 </small>
                 {subMenusListInactive?.map((menu) => (
                   <div key={menu.name} className="flex flex-col gap-1">
+                  <Link to={`/${menu.name}`} className="link">
                     <SubMenu data={menu} />
+                    </Link>
                   </div>
                 ))}
               </div>

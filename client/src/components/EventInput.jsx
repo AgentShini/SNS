@@ -57,7 +57,7 @@ export default function EventInput(){
             FetchEvents()
             FetchMyEvents()
             alert("SUCCESS")
-            navigate(`/Events/Events`)
+            navigate(`/Events`)
         } else {
           
             const errorData = await response.json();

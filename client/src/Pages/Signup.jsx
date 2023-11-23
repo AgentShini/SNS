@@ -34,7 +34,7 @@ export default function Signup(){
             localStorage.setItem('userSession', JSON.stringify(userObject));
             SetUsername(username)
             SetUsernameState()
-            Refresh()
+            RefreshCommunity()
             alert("Welcome")
             navigate(`/`)
         } else {

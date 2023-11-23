@@ -103,7 +103,7 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
         <thead>
           <tr>
             <th>Event Name</th>
-            <th>Date Created</th>
+            {/* <th>Date Created</th> */}
             <th>Start Date</th>
             <th>End Date</th>
 
@@ -121,10 +121,10 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
                 </div>
               </div>
             </td>
-            <td>
+            {/* <td>
               {formatDate(events.creation_date)}
               <br/>
-            </td>
+            </td> */}
             <th>
             <div className="font-bold">{formatDate(events.start_date)}</div>
             </th>

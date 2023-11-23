@@ -39,13 +39,13 @@ function App() {
     <Route path='/GroupChat' element = {<GroupChat/>}/>
 
 
-    <Route path='Groups/Groups' element = {<AllGroups/>}/>
-    <Route path='Events/Events' element = {<AllEvents/>}/>
+    <Route path='/Groups' element = {<AllGroups/>}/>
+    <Route path='/Events' element = {<AllEvents/>}/>
     {/* <Route path='/joinEvent' element = {<JoinEvent/>}/>
     <Route path='/joinGroup' element = {<JoinGroup/>}/> */}
     <Route path='/' element = {<Home/>}/>
-    <Route path='/Groups/createGroup' element = {<CreateGroup/>}/>
-    <Route path='/Events/createEvent' element = {<CreateEvent/>}/>
+    <Route path='/createGroup' element = {<CreateGroup/>}/>
+    <Route path='/createEvent' element = {<CreateEvent/>}/>
 
 
 

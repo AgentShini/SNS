@@ -110,7 +110,7 @@ console.log("Members are",groupUsersMap)
         <thead>
           <tr>
             <th>Group Name</th>
-            <th>Date Created</th>
+            {/* <th>Date Created</th> */}
             <th></th>
           </tr>
         </thead>
@@ -125,10 +125,10 @@ console.log("Members are",groupUsersMap)
                 </div>
               </div>
             </td>
-            <td>
+            {/* <td>
               {formatDate(groups.creation_date)}
               <br/>
-            </td>
+            </td> */}
             {/* <th>
             <div className="font-bold">{groups.access_code}</div>
             </th> */}

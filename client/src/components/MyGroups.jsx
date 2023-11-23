@@ -10,7 +10,6 @@ const navigate = useNavigate();
 
 
 const { activeUser,groupRoom, setGroupRoom, groupUsersMap, setGroupUsersMap, myGroups } = useContext(DataContext)
-console.log("MyGROUP",myGroups)
 const updateRoomID = async (access_code)=>{
   
   setGroupRoom(access_code)
