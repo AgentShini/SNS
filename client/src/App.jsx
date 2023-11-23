@@ -1,21 +1,17 @@
-import Signup from './Pages/Signup'
-import Login from './Pages/Login'
-import Home from './Pages/Home'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import io from 'socket.io-client'; 
+import Signup from './Pages/Signup'
+import Login from './Pages/Login'
+import Home from './Pages/Home'
 import InactiveChat from './Pages/InactiveChat'
 import CreateGroup from './Pages/CreateGroup'
 import CreateEvent from './Pages/CreateEvent'
-// import JoinGroup from './Pages/JoinGroup'
-// import JoinEvent from './Pages/JoinEvent'
 import AllGroups from './Pages/AllGroups'
 import AllEvents from './Pages/AllEvents'
 import Chat from "./Pages/Chat"
 import EventChat from "./Pages/EventChat"
 import GroupChat from './Pages/GroupChat'
-import MyEventPage from './Pages/MyEventPage'
-import MyGroupPage from './Pages/MyGroupPage'
 
 const socketIO = io.connect('http://localhost:5000')
 
@@ -30,8 +26,7 @@ function App() {
     <Router>
     <Routes>
     <Route path='/inactivechat' element = {<InactiveChat/>}/>
-    <Route path='/MyGroups' element = {<MyGroupPage/>}/>
-    <Route path='/MyEvents' element = {<MyEventPage/>}/>
+ 
 
 
     <Route path='/Chat' element = {<Chat/>}/>
@@ -41,8 +36,6 @@ function App() {
 
     <Route path='/Groups' element = {<AllGroups/>}/>
     <Route path='/Events' element = {<AllEvents/>}/>
-    {/* <Route path='/joinEvent' element = {<JoinEvent/>}/>
-    <Route path='/joinGroup' element = {<JoinGroup/>}/> */}
     <Route path='/' element = {<Home/>}/>
     <Route path='/createGroup' element = {<CreateGroup/>}/>
     <Route path='/createEvent' element = {<CreateEvent/>}/>

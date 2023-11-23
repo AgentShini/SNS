@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState } from "react";
+import {useContext} from "react";
 import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
@@ -29,9 +29,8 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
         newMap[eventRoom] = [...(newMap[eventRoom] || []), activeUser];
         return newMap;
       });
-    } else {
-      console.log(`${activeUser} already exists in event ${eventRoom}`);
-    }
+    } 
+    
 
     const response = await axios.get(`http://localhost:5000/chat/event_member?access_code=${encodeURIComponent(eventRoom)}&username=${encodeURIComponent(activeUser)}`);
     if (response.status == 200) {
@@ -61,9 +60,6 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
     return rawDate.toLocaleDateString('en-US', options);
   }
 
-  useEffect(()=>{
-    console.log("Members are",eventUsersMap)
-    },[eventUsersMap])
 
 
 

@@ -1,4 +1,4 @@
-import {useContext, useEffect } from "react";
+import {useContext} from "react";
 import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
@@ -67,9 +67,7 @@ const addUsersToGroup = async (groupRoom, activeUser) => {
   }
 
 
-useEffect(()=>{
-console.log("Members are",groupUsersMap)
-},[groupUsersMap])
+
 
 
 

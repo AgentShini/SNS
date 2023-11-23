@@ -29,7 +29,6 @@ export default function GroupMessages(){
  
  useEffect(() => {
   socketIO.on('receive_message', (data) => {
-    console.log(data);
     setGroupMessagesReceived((state) => [
       ...state,
       {
@@ -53,7 +52,6 @@ export default function GroupMessages(){
     const date = new Date(timestamp);
     return date.toLocaleString();
   }
- console.log("CHatss",groupmessagesReceived)
 
 
     return(

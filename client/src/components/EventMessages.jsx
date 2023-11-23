@@ -29,7 +29,6 @@ export default function EventMessages(){
  
  useEffect(() => {
   socketIO.on('receive_message', (data) => {
-    console.log(data);
     setEventMessagesReceived((state) => [
       ...state,
       {
@@ -53,7 +52,6 @@ export default function EventMessages(){
     const date = new Date(timestamp);
     return date.toLocaleString();
   }
- console.log("CHatss",eventmessagesReceived)
 
 
     return(

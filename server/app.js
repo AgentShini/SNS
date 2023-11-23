@@ -39,7 +39,6 @@ const io = new Server(server, {
 
 // Listen for when the client connects via socket.io-client
 io.on('connection', (socket) => {
-  console.log(`User connected ${socket.id}`);
 
   // We can write our socket event listeners in here...
 
@@ -90,7 +89,6 @@ io.on('connection', (socket) => {
   socket.on('send_message', (data) => {
     const { message, username, room, __createdtime__ } = data;
     io.in(room).emit('receive_message', data); // Send to all users in room, including sender
-    console.log("Message is",data)
   });
 
   

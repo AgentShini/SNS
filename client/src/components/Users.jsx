@@ -1,13 +1,11 @@
 
-import  { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import  { useContext } from 'react';
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
 export default function Users(){
   const {
-    activeDropdowns,
    SearchData, SearchResult, FetchUsers, toggleDropdown, setRoom, activeUser, room, setReceiver,
-    setReceiverID, receiver,UsersFriendsMap, setUsersFriendsMap
+    setReceiverID,UsersFriendsMap, setUsersFriendsMap
    } = useContext(DataContext)
 
 
@@ -28,9 +26,7 @@ export default function Users(){
           newMap[activeUser] = [...(newMap[activeUser] || []), room];
           return newMap;
         });
-      } else {
-        console.log(`already Friend for user ${activeUser}`);
-      }
+      } 
     } catch (error) {
       alert(error.data);
     }
@@ -74,9 +70,7 @@ export default function Users(){
    return sortedUserIDs.join('-');
  };
 
- useEffect(()=>{
-console.log("FriendList",UsersFriendsMap)
- },[UsersFriendsMap])
+
 
 
 
@@ -142,6 +136,7 @@ console.log("FriendList",UsersFriendsMap)
   ])
   const room = generateCommonRoomID(activeUser, user.username);
   addUsersToFriendList(room,activeUser)
+  alert("User added");
     }}
 id = {user._id} className=" text-md text-gray-700 dark:text-gray-200 block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                      Add Friend

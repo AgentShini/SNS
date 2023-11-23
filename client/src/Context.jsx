@@ -156,10 +156,8 @@ console.log(error.response)
 
     const FetchUsers= async(e) =>{
         const username = e.target.value;
-        console.log(username)
         SetSearch(username)
         const data = users;
-       console.log(username)
         const documents = data.filter((documents)=> documents.username.toLowerCase().includes(username));
         SetSearchResult(documents);
     }
@@ -239,13 +237,9 @@ console.log(error.response)
 
     if (storedUserString) {
       const storedUserObject = JSON.parse(storedUserString);
-      console.log("Session nameis",storedUserObject.username)
      setActiveUser(storedUserObject.username)
       setActiveUserState(true)
-      console.log('User object exists:', storedUserObject);
-    } else {
-      console.log('User object does not exist in localStorage');
-    }
+    } 
   }, []);
 
 
@@ -275,24 +269,7 @@ console.log(error.response)
         FetchEvents();
          },[]);
 
-      
-
-
-        
-         useEffect(()=>{
-          console.log("My GROUPS ARE",myGroups)
-         },[myGroups])
-
-         useEffect(()=>{
-          console.log("My Events ARE",myEvents)
-         },[myEvents])
-
-
-
-
-   console.log("ROom is",room)
-   console.log("Messages are",groupmessagesReceived)
-   console.log("Messages are",eventmessagesReceived)
+  
 
 
 

@@ -22,8 +22,7 @@ const SideNav = () => {
   const { pathname } = useLocation();
 
 
-  const {activeUserState,SetUsername,SetUsernameState, setReceiver, 
-    myGroups, myEvents, setReceiverID,activeUser,
+  const {activeUserState,SetUsername,SetUsernameState, setReceiver,setReceiverID,activeUser,
      setRoom, UsersFriendsMap} = useContext(DataContext)
 
   const navigate = useNavigate()
@@ -46,9 +45,7 @@ const SideNav = () => {
 
 if (storedUserString) {
   localStorage.removeItem('userSession')
-} else {
-  console.log('User object does not exist in localStorage');
-}
+} 
         SetUsername("")
         SetUsernameState()
         setReceiver("")

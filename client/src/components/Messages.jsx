@@ -53,7 +53,6 @@ export default function Messages(){
     const date = new Date(timestamp);
     return date.toLocaleString();
   }
- console.log("CHatss",messagesReceived)
 
 
     return(
