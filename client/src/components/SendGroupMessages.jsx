@@ -1,7 +1,9 @@
 import {useState,useContext} from 'react'
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
+require("dotenv").config()
 export default function SendGroupMessage(){
+  const SERVER = process.env.SERVER
     const [chat, setChat] = useState('');
     const { activeUser, groupRoom, FetchGroupMessages
        } = useContext(DataContext)
@@ -12,7 +14,7 @@ export default function SendGroupMessage(){
        const sendMessage= async () => {
       
         try {
-          const response = await fetch('http://localhost:5000/chat/groupmessage', {
+          const response = await fetch(`${SERVER}/chat/groupmessage`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

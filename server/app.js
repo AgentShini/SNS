@@ -23,7 +23,7 @@ let allUsers = [];
 
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173',''],
   credentials: true, // Enable credentials (cookies, etc.)
 };
 
@@ -32,7 +32,7 @@ app.use(cors(corsOptions));
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173',''],
     methods: ['GET', 'POST'],
   },
 });

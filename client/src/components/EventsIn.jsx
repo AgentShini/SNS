@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
 import axios from "axios"
+require("dotenv").config()
 export default function EventsIn(){
+  const SERVER = process.env.SERVER
 
   const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
     } 
     
 
-    const response = await axios.get(`http://localhost:5000/chat/event_member?access_code=${encodeURIComponent(eventRoom)}&username=${encodeURIComponent(activeUser)}`);
+    const response = await axios.get(`${SERVER}/chat/event_member?access_code=${encodeURIComponent(eventRoom)}&username=${encodeURIComponent(activeUser)}`);
     if (response.status == 200) {
       navigate(`/EventChat`);
     }
@@ -69,7 +71,7 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
 
 
     try {
-      const response = await fetch('http://localhost:5000/chat/joinEvent', {
+      const response = await fetch(`${SERVER}/chat/joinEvent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

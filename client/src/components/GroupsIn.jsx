@@ -3,9 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
 import axios from "axios"
+require("dotenv").config()
+
 
 
 export default function GroupsIn(){
+  const SERVER = process.env.SERVER
+
 const navigate = useNavigate();
 
 
@@ -34,7 +38,7 @@ const addUsersToGroup = async (groupRoom, activeUser) => {
       console.log(`${activeUser} already exists in group ${groupRoom}`);
     }
 
-    const response = await axios.get(`http://localhost:5000/chat/group_member?access_code=${encodeURIComponent(groupRoom)}&username=${encodeURIComponent(activeUser)}`);
+    const response = await axios.get(`${SERVER}/chat/group_member?access_code=${encodeURIComponent(groupRoom)}&username=${encodeURIComponent(activeUser)}`);
     if (response.status == 200) {
       navigate(`/GroupChat`);
     }
@@ -75,7 +79,7 @@ const addUsersToGroup = async (groupRoom, activeUser) => {
   const handleSubmit = async (e) => {
     const updatedAccessCode = e.target.value;
     try {
-      const response = await fetch('http://localhost:5000/chat/joinGroup', {
+      const response = await fetch(`${SERVER}/chat/joinGroup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

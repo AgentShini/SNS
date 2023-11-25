@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataContext } from '../Context';
-
+require("dotenv").config()
 export default function Signup(){
+  const SERVER = process.env.SERVER
+
     const {Refresh,SetUsername, SetUsernameState} = useContext(DataContext)
 
     const [email, setEmail] = useState('');
@@ -17,7 +19,7 @@ export default function Signup(){
         e.preventDefault();
     
         try {
-          const response = await fetch('http://localhost:5000/chat/register', {
+          const response = await fetch(`${SERVER}/chat/register`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

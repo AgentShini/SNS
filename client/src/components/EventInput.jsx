@@ -2,9 +2,13 @@ import { Datepicker } from 'flowbite-react';
 import { useState, useContext } from "react";
 import {useNavigate} from "react-router-dom"
 import { DataContext } from '../Context';
+require("dotenv").config()
+const SERVER = process.env.SERVER
+
 
   
 export default function EventInput(){
+  const SERVER = process.env.SERVER
     const {FetchEvents,FetchMyEvents} = useContext(DataContext)
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -44,7 +48,7 @@ export default function EventInput(){
         try {
           const end_date = document.getElementById('end_date').value;
           const start_date = document.getElementById('start_date').value;
-          const response = await fetch('http://localhost:5000/chat/createEvent', {
+          const response = await fetch(`${SERVER}/chat/createEvent`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

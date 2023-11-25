@@ -12,8 +12,10 @@ import AllEvents from './Pages/AllEvents'
 import Chat from "./Pages/Chat"
 import EventChat from "./Pages/EventChat"
 import GroupChat from './Pages/GroupChat'
+require("dotenv").config()
+const SERVER = process.env.SERVER
 
-const socketIO = io.connect('http://localhost:5000')
+const socketIO = io.connect(`${SERVER}`)
 
 export  { socketIO };
 

@@ -1,11 +1,10 @@
 import { useState, useContext } from "react";
 import {useNavigate} from "react-router-dom"
 import { DataContext } from '../Context';
-
-
-
-
+require("dotenv").config()
 export default function GroupInput(){
+  const SERVER = process.env.SERVER
+
     const {FetchGroups,FetchMyGroups} = useContext(DataContext)
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -15,7 +14,7 @@ export default function GroupInput(){
         e.preventDefault();
     
         try {
-          const response = await fetch('http://localhost:5000/chat/createGroup', {
+          const response = await fetch(`${SERVER}/chat/createGroup`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

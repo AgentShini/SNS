@@ -1,7 +1,9 @@
 import { createContext, useEffect, useState } from "react";
+require("dotenv").config()
 import axios from "axios"
 const DataContext = createContext();
 const DataContextProvider = ({children}) =>{
+  const SERVER = process.env.SERVER
     const [users,setUsers] = useState([])
     const [groups,setGroups] = useState([])
     const [events,setEvents] = useState([])
@@ -44,7 +46,7 @@ const DataContextProvider = ({children}) =>{
     const FetchAllUsers =async()=>{
         if(users.length === 0){
             try {
-        await axios.get('http://localhost:5000/chat/usernames')
+        await axios.get(`${SERVER}/chat/usernames`)
         .then((response) => {
           setUsers(response.data);
             SetSearchResult(response.data)
@@ -68,7 +70,7 @@ const DataContextProvider = ({children}) =>{
           const storedUserObject = JSON.parse(storedUserString);
      
           try{
-            await axios.get(`http://localhost:5000/chat/GroupsIn?username=${encodeURIComponent(storedUserObject.username)}`)
+            await axios.get(`${SERVER}/chat/GroupsIn?username=${encodeURIComponent(storedUserObject.username)}`)
             .then((response)=>{
               setMyGroups(response.data)
             })
@@ -88,7 +90,7 @@ const DataContextProvider = ({children}) =>{
         if (storedUserString) {
           const storedUserObject = JSON.parse(storedUserString);
           try{
-            await axios.get(`http://localhost:5000/chat/EventsIn?username=${encodeURIComponent(storedUserObject.username)}`)
+            await axios.get(`${SERVER}/chat/EventsIn?username=${encodeURIComponent(storedUserObject.username)}`)
             .then((response)=>{
               setMyEvents(response.data)
             })
@@ -105,7 +107,7 @@ const DataContextProvider = ({children}) =>{
 
       const FetchGroups =async()=>{
         try {
-    await axios.get('http://localhost:5000/chat/groups')
+    await axios.get(`${SERVER}/chat/groups`)
     .then((response) => {
       setGroups(response.data);
     })
@@ -120,7 +122,7 @@ const DataContextProvider = ({children}) =>{
 
 const FetchEvents =async ()=>{
   try {
-await axios.get('http://localhost:5000/chat/events')
+await axios.get(`${SERVER}/chat/events`)
 .then((response) => {
 setEvents(response.data);
 })
@@ -138,7 +140,7 @@ console.log(error.response)
 
       const Refresh =()=>{
             try {
-        axios.get('http://localhost:5000/chat/usernames')
+        axios.get(`${SERVER}/chat/usernames`)
         .then((response) => {
           setUsers(response.data);
             SetSearchResult(response.data)
@@ -175,7 +177,7 @@ console.log(error.response)
     if (room !== ""){
     try {
       const roomID = room
-      await axios.get(`http://localhost:5000/chat/room_messages?roomID=${encodeURIComponent(roomID)}`)
+      await axios.get(`${SERVER}/chat/room_messages?roomID=${encodeURIComponent(roomID)}`)
       .then((response) => {
         setMessagesReceived(response.data)
 
@@ -196,7 +198,7 @@ console.log(error.response)
     if (groupRoom !== ""){
     try {
       const roomID = groupRoom
-      await axios.get(`http://localhost:5000/chat/group_messages?roomID=${encodeURIComponent(roomID)}`)
+      await axios.get(`${SERVER}/chat/group_messages?roomID=${encodeURIComponent(roomID)}`)
       .then((response) => {
         setGroupMessagesReceived(response.data)
 
@@ -216,7 +218,7 @@ console.log(error.response)
     if (eventRoom !== ""){
     try {
       const roomID = eventRoom
-      await axios.get(`http://localhost:5000/chat/event_messages?roomID=${encodeURIComponent(roomID)}`)
+      await axios.get(`${SERVER}/chat/event_messages?roomID=${encodeURIComponent(roomID)}`)
       .then((response) => {
         setEventMessagesReceived(response.data)
 

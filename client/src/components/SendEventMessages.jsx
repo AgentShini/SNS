@@ -1,7 +1,10 @@
 import {useState,useContext} from 'react'
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
+require("dotenv").config()
 export default function SendEventMessage(){
+  const SERVER = process.env.SERVER
+
     const [chat, setChat] = useState('');
     const { activeUser, eventRoom, FetchEventMessages
        } = useContext(DataContext)
@@ -12,7 +15,7 @@ export default function SendEventMessage(){
        const sendMessage= async () => {
       
         try {
-          const response = await fetch('http://localhost:5000/chat/eventmessage', {
+          const response = await fetch(`${SERVER}/chat/eventmessage`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
