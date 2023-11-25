@@ -1,7 +1,8 @@
 import {useState,useContext} from 'react'
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
-require("dotenv").config()
+import dotenv from 'dotenv';
+dotenv.config();
 export default function SendGroupMessage(){
   const SERVER = process.env.SERVER
     const [chat, setChat] = useState('');

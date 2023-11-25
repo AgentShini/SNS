@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
-require("dotenv").config()
+import dotenv from 'dotenv';
+dotenv.config();
 import axios from "axios"
 const DataContext = createContext();
 const DataContextProvider = ({children}) =>{

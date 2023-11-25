@@ -12,8 +12,8 @@ import { MdMenu } from "react-icons/md";
 import { Link, useNavigate , useLocation } from "react-router-dom";
 import { useContext } from 'react';
 import { DataContext } from '../Context';
-require("dotenv").config()
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 const SideNav = () => {

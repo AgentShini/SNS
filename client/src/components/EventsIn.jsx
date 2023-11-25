@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import {DataContext} from "../Context"
 import {socketIO} from "../App"
 import axios from "axios"
-require("dotenv").config()
+import dotenv from 'dotenv';
+dotenv.config();
 export default function EventsIn(){
   const SERVER = process.env.SERVER
 
