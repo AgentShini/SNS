@@ -12,12 +12,10 @@ import { MdMenu } from "react-icons/md";
 import { Link, useNavigate , useLocation } from "react-router-dom";
 import { useContext } from 'react';
 import { DataContext } from '../Context';
-import dotenv from 'dotenv';
-dotenv.config();
+
 
 
 const SideNav = () => {
-  const SERVER = process.env.SERVER
 
   let isTabletMid = useMediaQuery({ query: "(max-width: 768px)" });
   const [open, setOpen] = useState(isTabletMid ? false : true);
@@ -35,7 +33,7 @@ const SideNav = () => {
 
   const handleSubmit = async (e) => {
     try {
-      const response = await fetch(`${SERVER}/chat/logout`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

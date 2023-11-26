@@ -12,10 +12,9 @@ import AllEvents from './Pages/AllEvents'
 import Chat from "./Pages/Chat"
 import EventChat from "./Pages/EventChat"
 import GroupChat from './Pages/GroupChat'
-require("dotenv").config()
-const SERVER = process.env.SERVER
 
-const socketIO = io.connect(`${SERVER}`)
+const socketIO = io.connect(`${import.meta.env.VITE_SERVER
+}`)
 
 export  { socketIO };
 

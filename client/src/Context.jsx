@@ -1,10 +1,8 @@
 import { createContext, useEffect, useState } from "react";
-import dotenv from 'dotenv';
-dotenv.config();
 import axios from "axios"
 const DataContext = createContext();
 const DataContextProvider = ({children}) =>{
-  const SERVER = process.env.SERVER
+  const SERVER = import.meta.env.VITE_SERVER
     const [users,setUsers] = useState([])
     const [groups,setGroups] = useState([])
     const [events,setEvents] = useState([])

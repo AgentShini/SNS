@@ -11,6 +11,8 @@ const API = require("./routes/API");
 const mongoose = require("mongoose")
 const bodyparser = require("body-parser")
 require("dotenv").config()
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, './ignore/.env') });
 const app = express();
 const port = 5000;
 const http = require('http');
@@ -23,7 +25,7 @@ let allUsers = [];
 
 
 const corsOptions = {
-  origin: ['http://localhost:5173',''],
+  origin: ['http://localhost:5173','http://localhost:4173'],
   credentials: true, // Enable credentials (cookies, etc.)
 };
 
@@ -32,7 +34,7 @@ app.use(cors(corsOptions));
 
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173',''],
+    origin: ['http://localhost:5173','http://localhost:4173'],
     methods: ['GET', 'POST'],
   },
 });

@@ -2,10 +2,8 @@ import { Link } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataContext } from '../Context';
-import dotenv from 'dotenv';
-dotenv.config();
+
 export default function Login(){
-  const SERVER = process.env.SERVER
 
     const {Refresh,SetUsername, SetUsernameState} = useContext(DataContext)
 
@@ -19,7 +17,7 @@ export default function Login(){
         e.preventDefault();
     
         try {
-          const response = await fetch(`${SERVER}/chat/login`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
