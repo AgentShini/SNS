@@ -19,7 +19,7 @@ export default function Signup(){
         e.preventDefault();
     
         try {
-          const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/register`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}chat/register`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

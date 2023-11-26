@@ -13,7 +13,7 @@ export default function GroupInput(){
         e.preventDefault();
     
         try {
-          const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/createGroup`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}chat/createGroup`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

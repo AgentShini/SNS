@@ -33,7 +33,7 @@ const SideNav = () => {
 
   const handleSubmit = async (e) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/logout`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}chat/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

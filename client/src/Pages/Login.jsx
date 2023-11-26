@@ -17,7 +17,7 @@ export default function Login(){
         e.preventDefault();
     
         try {
-          const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/login`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}chat/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

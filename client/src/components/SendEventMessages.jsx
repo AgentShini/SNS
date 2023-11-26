@@ -14,7 +14,7 @@ export default function SendEventMessage(){
        const sendMessage= async () => {
       
         try {
-          const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/eventmessage`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}chat/eventmessage`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -47,7 +47,7 @@ export default function EventInput(){
         try {
           const end_date = document.getElementById('end_date').value;
           const start_date = document.getElementById('start_date').value;
-          const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/createEvent`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}chat/createEvent`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -36,7 +36,7 @@ const addUsersToGroup = async (groupRoom, activeUser) => {
       console.log(`${activeUser} already exists in group ${groupRoom}`);
     }
 
-    const response = await axios.get(`${import.meta.env.VITE_SERVER}/chat/group_member?access_code=${encodeURIComponent(groupRoom)}&username=${encodeURIComponent(activeUser)}`);
+    const response = await axios.get(`${import.meta.env.VITE_SERVER}chat/group_member?access_code=${encodeURIComponent(groupRoom)}&username=${encodeURIComponent(activeUser)}`);
     if (response.status == 200) {
       navigate(`/GroupChat`);
     }
@@ -77,7 +77,7 @@ const addUsersToGroup = async (groupRoom, activeUser) => {
   const handleSubmit = async (e) => {
     const updatedAccessCode = e.target.value;
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/joinGroup`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}chat/joinGroup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

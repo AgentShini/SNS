@@ -13,7 +13,7 @@ export default function SendGroupMessage(){
        const sendMessage= async () => {
       
         try {
-          const response = await fetch(`${import.meta.env.VITE_SERVER}/chat/groupmessage`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}chat/groupmessage`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

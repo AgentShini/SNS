@@ -33,7 +33,7 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
     } 
     
 
-    const response = await axios.get(`${import.meta.env.VITE_SERVER}/chat/event_member?access_code=${encodeURIComponent(eventRoom)}&username=${encodeURIComponent(activeUser)}`);
+    const response = await axios.get(`${import.meta.env.VITE_SERVER}chat/event_member?access_code=${encodeURIComponent(eventRoom)}&username=${encodeURIComponent(activeUser)}`);
     if (response.status == 200) {
       navigate(`/EventChat`);
     }
@@ -70,7 +70,7 @@ const addUsersToEvent = async (eventRoom, activeUser) => {
 
 
     try {
-      const response = await fetch(`${SERVER}/chat/joinEvent`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}chat/joinEvent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
