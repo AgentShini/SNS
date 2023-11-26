@@ -25,7 +25,7 @@ let allUsers = [];
 
 
 const corsOptions = {
-  origin: ['http://localhost:5173','http://localhost:4173','https://sns-client.onrender.com/'],
+  origin: ['http://localhost:5173','http://localhost:4173','https://sns-client.onrender.com'],
   credentials: true, // Enable credentials (cookies, etc.)
 };
 
@@ -34,7 +34,7 @@ app.use(cors(corsOptions));
 
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173','http://localhost:4173','https://sns-client.onrender.com/'],
+    origin: ['http://localhost:5173','http://localhost:4173','https://sns-client.onrender.com'],
     methods: ['GET', 'POST'],
   },
 });
