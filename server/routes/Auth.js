@@ -59,7 +59,7 @@ router.post("/register",async(req,res)=>{
       expires: expiresAt,
       domain: 'sns-client.onrender.com', // or 'localhost'
       path: '/', // Set to the path where the cookie should be accessible
-      secure: false, // Set to true if you use HTTPS in development
+      secure: true, // Set to true if you use HTTPS in development
       httpOnly: true, // Recommended for security, prevents client-side access
       sameSite:'Strict',
     }); 
@@ -129,7 +129,7 @@ router.get("/access",(req,res)=>{
     expires: new Date(),
     domain: 'sns-client.onrender.com', // or 'localhost'
     path: '/', // Set to the path where the cookie should be accessible
-    secure: false, // Set to true if you use HTTPS in development
+    secure: true, // Set to true if you use HTTPS in development
     httpOnly: true, // Recommended for security, prevents client-side access
     sameSite:'Strict',
   }).json({message:"Logged out"});  
@@ -178,7 +178,7 @@ router.get("/access",(req,res)=>{
             expires: expiresAt,
             domain: 'sns-client.onrender.com', // or 'localhost'
             path: '/', // Set to the path where the cookie should be accessible
-            secure: false, // Set to true if you use HTTPS in development
+            secure: true, // Set to true if you use HTTPS in development
             httpOnly: true, // Recommended for security, prevents client-side access
             sameSite:'Strict',
           });            return res.status(200).json({ message: "User Logged in Successfully" });
