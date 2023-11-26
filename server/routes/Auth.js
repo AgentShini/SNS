@@ -57,7 +57,7 @@ router.post("/register",async(req,res)=>{
     // and the value as the UUID we generated. We also set the expiry time
     res.cookie('session_token', sessionToken, {
       expires: expiresAt,
-      domain: 'sns-client.onrender.com', // or 'localhost'
+      domain: '.onrender.com', // or 'localhost'
       path: '/', // Set to the path where the cookie should be accessible
       secure: true, // Set to true if you use HTTPS in development
       httpOnly: true, // Recommended for security, prevents client-side access
@@ -127,7 +127,7 @@ router.get("/access",(req,res)=>{
 
   return res.cookie('session_token', "", {
     expires: new Date(),
-    domain: 'sns-client.onrender.com', // or 'localhost'
+    domain: '.onrender.com', // or 'localhost'
     path: '/', // Set to the path where the cookie should be accessible
     secure: true, // Set to true if you use HTTPS in development
     httpOnly: true, // Recommended for security, prevents client-side access
@@ -176,7 +176,7 @@ router.get("/access",(req,res)=>{
           // and the value as the UUID we generated. We also set the expiry time
           res.cookie('session_token', sessionToken, {
             expires: expiresAt,
-            domain: 'sns-client.onrender.com', // or 'localhost'
+            domain: '.onrender.com', // or 'localhost'
             path: '/', // Set to the path where the cookie should be accessible
             secure: true, // Set to true if you use HTTPS in development
             httpOnly: true, // Recommended for security, prevents client-side access
