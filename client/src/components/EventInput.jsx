@@ -16,10 +16,7 @@ export default function EventInput(){
       const unformattedDate = selectedDate;
       const formattedDate = formatDateToISOString(unformattedDate);
   
-      // Log the formatted date
-      console.log('Formatted Start Date:', formattedDate);
   
-      // Now you can use the formattedDate as needed
     };
 
 

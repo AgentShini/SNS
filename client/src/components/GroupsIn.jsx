@@ -32,9 +32,7 @@ const addUsersToGroup = async (groupRoom, activeUser) => {
         newMap[groupRoom] = [...(newMap[groupRoom] || []), activeUser];
         return newMap;
       });
-    } else {
-      console.log(`${activeUser} already exists in group ${groupRoom}`);
-    }
+    } 
 
     const response = await axios.get(`${import.meta.env.VITE_SERVER}chat/group_member?access_code=${encodeURIComponent(groupRoom)}&username=${encodeURIComponent(activeUser)}`);
     if (response.status == 200) {

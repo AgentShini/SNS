@@ -29,7 +29,6 @@ export default function Messages(){
  
  useEffect(() => {
   socketIO.on('receive_message', (data) => {
-    console.log(data);
     setMessagesReceived((state) => [
       ...state,
       {
